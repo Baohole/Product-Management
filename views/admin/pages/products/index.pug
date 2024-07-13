@@ -1,0 +1,119 @@
+extends ../../layouts/default.pug
+include ../../mixins/status-filter.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/form-change-status.pug
+include ../../mixins/alert.pug
+
+block main
+
+    +alert-success(3000)
+    +alert-fail(5000)
+    
+    h1 Trang sản phẩm
+ 
+    .card.mb-3  
+        .card-header Bộ lọc và Tìm kiếm 
+        .card-body 
+            .row
+                .col-6
+                    +filterStatus(filterStatus)
+
+                .col-6 
+                   +search-form(find)
+   
+    .card.mb-3  
+        .card-header Danh sách
+        .card-body 
+            .row 
+                .col-10
+                    +formChange(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                .col-2
+                    a(
+                        href=`${prefixAdmin}/products/create`
+                        class='btn btn-outline-success'
+                    ) + Thêm sản phẩm
+
+            table(
+                class="table table-hover table-sm"
+                check-multi=''
+            )
+                thead 
+                    tr 
+                        th 
+                            input#checkboxNoLabel.form-check-input(type='checkbox' value='' aria-label='...' name='check-all')
+
+                        th STT 
+                        th Hình ảnh
+                        th Tên sản phẩm
+                        th Giá
+                        th Vị trí
+                        th Trạng thái
+                        th Hành động
+                tbody 
+                    each item, index in products
+                        tr
+                            td 
+                                input#checkboxNoLabel.form-check-input(type='checkbox' value=item.id aria-label='...' name='id')
+                            td #{index + 1}
+                            td 
+                                img(
+                                    src=item.thumbnail
+                                    alt=item.title
+                                    width = "50px"
+                                    height = "auto"
+                                )
+                            td #{item.title}
+                            td #{item.price}$
+                            td
+                                input(
+                                    type='number'
+                                    value=item.position 
+                                    style='width: 50px'
+                                    min='1'
+                                    name='position'
+                                )
+                            td 
+                                if (item.status === 'active')
+                                    button(
+                                        class='badge bg-success'
+                                        data-status =  item.status
+                                        data-id = item.id
+                                        button-change-status) Hoạt động
+                                else 
+                                    button(
+                                        class='badge bg-danger'
+                                        data-status =  item.status
+                                        data-id = item.id
+                                        button-change-status) Dừng hoạt động
+                            td 
+                                a(
+                                    href=`${prefixAdmin}/products/edit/${item.id}`
+                                    class='btn btn-warning btn-sm') Sửa 
+                                button(
+                                    class='btn btn-danger btn-sm'
+                                    data-id = item.id
+                                    button-delete) Xóa
+
+    nav
+        ul(class="pagination")
+           +pagination(pagination)
+
+    
+    form(
+        action=""
+        data-path='/admin/products/change-status/'
+        method = 'POST'
+        type='hidden'
+        id='change-status-form'
+    )
+
+    form(
+        action=""
+        data-path='/admin/products/delete/'
+        method = 'POST'
+        type='hidden'
+        id='delete-form'
+    )
+
+    script(src="/admin/js/product.js") 
