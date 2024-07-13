@@ -5,6 +5,7 @@ const upload = multer({ dest: 'uploads/' })
 
 const controller = require('../../controllers/admin/products.controller');
 const validate = require('../../validate/admin/product.validate');
+
 router.get('/', controller.index);
 router.patch('/change-status/:status/:id', controller.changeStatus);
 router.patch('/change-multi', controller.changeMultiStatus);
