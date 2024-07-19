@@ -17,7 +17,7 @@ module.exports.index = async (req, res) => {
     let total =  await Product.countDocuments(find);
     pagination.totalPages = Math.ceil(total / pagination.limitItems);
     pagination.skip = (pagination.currentPage - 1) * pagination.limitItems;
-    console.log(pagination.totalPages);
+    //console.log(pagination.totalPages);
 
     let products = await Product.find(find)
                                 .limit(pagination.limitItems)

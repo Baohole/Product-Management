@@ -23,6 +23,14 @@ module.exports.index = async (req, res) => {
     if(searchStatus.regex){
         find.title = searchStatus.regex;
     }
+    
+    const sorted = {};
+    if(req.query.sortVal){
+        sorted[req.query.sortKey] = req.query.sortVal;
+    }
+    else{
+        sorted.position = 'desc';
+    }
     //console.log(req.query.search_query);
 
     if(req.query.page){
@@ -37,7 +45,7 @@ module.exports.index = async (req, res) => {
     let products = await Product.find(find)
                                 .limit(pagination.limitItems)
                                 .skip(pagination.skip)
-                                .sort({position: 1});
+                                .sort(sorted);
     res.render('admin/pages/products/index', {
         pageTitle: 'Trang sản phẩm',
         products: products,
@@ -130,7 +138,7 @@ module.exports.createProductPost = async (req, res) => {
     else{
         data.position = await Product.countDocuments() + 1;
     }
-
+    
     const product = new Product(data);
     try {
         await product.save();
@@ -139,7 +147,7 @@ module.exports.createProductPost = async (req, res) => {
         req.flash('error', "Tạo mới thất bại!!");
     }   
    
-    res.redirect('back');
+    //res.redirect('back');
 }
 
 module.exports.editProduct = async (req, res) => {

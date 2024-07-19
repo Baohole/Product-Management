@@ -106,7 +106,6 @@ if(productsTable){
 }
 
 const showAlert = document.querySelector('[show-alert]');
-console.log(showAlert);
 if (showAlert) {
     const time = parseInt(showAlert.getAttribute('data-time'));
 
@@ -121,6 +120,32 @@ if (showAlert) {
 }
 
 
+const productFilter = document.querySelector('[sort]');
+if (productFilter){
+    const url = new URL(window.location.href);
+    const filter = productFilter.querySelector('[sort-select]');
+    //console.log(filter);
+    filter.addEventListener('change', (e) => {
+        const value = e.target.value;
+        const[filterKey, filterVal] = value.split('-');
 
+        url.searchParams.set('sortKey', filterKey);
+        url.searchParams.set('sortVal', filterVal);
+        window.location.href = url.href;
+    });
+
+    const clear = productFilter.querySelector('[sort-clear]');
+    clear.addEventListener('click', () => {
+        url.searchParams.delete('sortKey');
+        url.searchParams.delete('sortVal');
+        window.location.href = url.href;
+    });
+
+    const key = url.searchParams.get('sortKey');
+    if(key){
+        const val = url.searchParams.get('sortVal');
+        filter.querySelector(`option[value=${key}-${val}]`).selected = true;
+    }
+}
 
 
