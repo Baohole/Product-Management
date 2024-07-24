@@ -8,17 +8,35 @@ cloudinary.config({
   api_secret: 'KWKxgIhvWXJ2OuvM3sQyE0WWyS4' // Click 'View Credentials' below to copy your API secret
 });
 module.exports.cloudUpload = async (req, res, next) => {
-  //const file = req.file.path;
-  console.log( req.file);
-  // const uploadResult = await cloudinary.uploader
-  // .upload(
-  //   `${file}`
-  // )
-  // .catch((error) => {
-  //     console.log(error); 
-  // });
+  if (req.file) {
+    let streamUpload = (req) => {
+      return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream(
+          (error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
+            }
+          }
+        );
 
-  // console.log(uploadResult);
-  next();
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+
+    async function upload(req) {
+      let result = await streamUpload(req);
+      console.log(req.body)
+      req.body.thumbnail = result.url;
+      //console.log(result);
+    }
+    upload(req);
+    next();
+    //console.log('OK');
+  }
+  else {
+    next();
+  }
 }
 

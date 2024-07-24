@@ -14,8 +14,8 @@ router.patch('/change-status/:status/:id', controller.changeStatus);
 router.patch('/change-multi', controller.changeMultiStatus);
 router.delete('/delete/:id', controller.deleteItem);
 
-router.get('/create', upload.single('thumbnail'), controller.createProduct);
-router.post('/create', validate.validateTitle, cloudUpload.cloudUpload, controller.createProductPost);
+router.get('/create', controller.createProduct);
+router.post('/create', upload.single('thumbnail'), validate.validateTitle, cloudUpload.cloudUpload, controller.createProductPost);
 
 router.get('/edit/:id', controller.editProduct);
 router.patch('/edit/:id', validate.validateTitle, controller.editProductPatch);

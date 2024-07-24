@@ -129,6 +129,7 @@ module.exports.createProduct = async (req, res) => {
 module.exports.createProductPost = async (req, res) => {
     //console.log(req.body);
     const data = req.body;
+    //console.log(data);
     data.price = parseInt(data.price);
     data.discountPercentage = parseInt(data.discountPercentage);
     data.stock = parseInt(data.stock);
@@ -147,7 +148,7 @@ module.exports.createProductPost = async (req, res) => {
         req.flash('error', "Tạo mới thất bại!!");
     }   
    
-    //res.redirect('back');
+    res.redirect('back');
 }
 
 module.exports.editProduct = async (req, res) => {
