@@ -1,5 +1,7 @@
 const Category = require('../../models/categories.model');
 const createTree = require('../../helper/creatTree.helper');
+
+// [GET] admin/categories
 module.exports.index = async (req, res) => {
     const find = {
         deleted: false
@@ -12,6 +14,7 @@ module.exports.index = async (req, res) => {
     });
 }
 
+// [GET] admin/categories/creat
 module.exports.creatCategory = async (req, res) => {
     const find = {
         deleted: false
@@ -28,6 +31,7 @@ module.exports.creatCategory = async (req, res) => {
     });
 }
 
+// [POST] admin/categories/creat
 module.exports.creatCategoryPost = async (req, res) => {
     const data = req.body;
     

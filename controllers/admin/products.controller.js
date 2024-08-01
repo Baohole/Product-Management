@@ -2,6 +2,7 @@ const Product = require('../../models/products.model');
 const filterHelper = require('../../helper/filter.helper');
 const searchHelper = require('../../helper/search.helper');
 
+// [GET] admin/products
 module.exports.index = async (req, res) => {
     const filterStatus = filterHelper(req.query);
     const searchStatus = searchHelper(req.query);
@@ -55,6 +56,7 @@ module.exports.index = async (req, res) => {
     });
 }
 
+// [PATCH] admin/products/change-status
 module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
     const currentStatus = req.params.status;
@@ -70,6 +72,7 @@ module.exports.changeStatus = async (req, res) => {
 
 }
 
+// [PATCH] admin/products/change-multi
 module.exports.changeMultiStatus = async (req, res) => {
     const ids = req.body.ids.split(',');
     const status = req.body.type;
@@ -105,6 +108,7 @@ module.exports.changeMultiStatus = async (req, res) => {
     //res.send('OK');
 }
 
+// [DELETE] admin/products/delete
 module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
 
@@ -120,12 +124,14 @@ module.exports.deleteItem = async (req, res) => {
 
 }
 
+// [GET] admin/products/creat
 module.exports.createProduct = async (req, res) => {
     res.render('admin/pages/products/create', {
         pageTitle: 'Tạo mới sản phẩm'
     });
 }
 
+// [POST] admin/products/creat
 module.exports.createProductPost = async (req, res) => {
     //console.log(req.body);
     const data = req.body;
@@ -151,6 +157,7 @@ module.exports.createProductPost = async (req, res) => {
     res.redirect('back');
 }
 
+// [GET] admin/products/edit
 module.exports.editProduct = async (req, res) => {
     //console.log(req.params);
     const find = {
@@ -165,15 +172,15 @@ module.exports.editProduct = async (req, res) => {
     });;
 }
 
+// [PATCH] admin/products/edit
 module.exports.editProductPatch = async (req, res) => {
-    //console.log(req.body);
-    //res.send('OK');
     const data = req.body;
+
     data.price = parseInt(data.price);
     data.discountPercentage = parseInt(data.discountPercentage);
     data.stock = parseInt(data.stock);
     data.position = parseInt(data.position);
-
+    //console.log(data);
     try {
         await Product.updateOne({_id: req.params.id}, data);
         req.flash('success', `Cập nhật thành công!!`);

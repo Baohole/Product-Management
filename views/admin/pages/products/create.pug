@@ -60,13 +60,23 @@ block main
                 value="0"
                 min="0"
             )
-        div(class="form-group")
+        div(
+            class="form-group"
+            img-upload
+        )
             label(for="thumbnail") Ánh
             input(
                 type="file"
                 class="form-control"
                 id="thumbnail"
                 name="thumbnail"
+                accept='image/* '
+                img-upload-input
+            )
+            img(
+                src=""
+                style ='width: 100px'
+                img-upload-preview
             )
         div(class="form-group")
             label(for="position") Vị trí

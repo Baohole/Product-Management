@@ -12,6 +12,7 @@ block main
         action= `${prefixAdmin}/products/edit/${product.id}?_method=PATCH` 
         id="form-edit-product" 
         method="POST"
+        enctype="multipart/form-data"
     )
         div(class="form-group")
             label(for="title") Tiêu đề 
@@ -65,21 +66,21 @@ block main
 
         div(
             class="form-group"
-            product-thumbnail
-            )
+            img-upload
+        )
             label(for="thumbnail") Ánh
             input(
-                type="text"
+                type="file"
                 class="form-control"
                 id="thumbnail"
                 name="thumbnail"
-                product-thumbnail-input
-                value=product.thumbnail
+                img-upload-input
             )
             img(
                 src=product.thumbnail
                 alt="Ảnh sản phẩm"
-                product-thumbnail-img
+                style ='width: 100px'
+                img-upload-preview
             )
         div(class="form-group")
             label(for="position") Vị trí

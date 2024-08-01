@@ -1,3 +1,4 @@
+// Status Filter
 const buttonAttribute = document.querySelectorAll('[button-status]');
 if (buttonAttribute.length > 0) {
     let url = new URL(window.location.href);
@@ -19,14 +20,15 @@ if (buttonAttribute.length > 0) {
     });
 }
 
+// Search Product
 const formSearch = document.querySelector('#form-search');
 if (formSearch) {
     let url = new URL(window.location.href);
     formSearch.addEventListener('submit', (e) => {
-        e.preventDefault();
-        console.log(e);
+        //e.preventDefault();
+        //console.log(e);
         const key = e.target.elements.search_query.value;
-        console.log(key);
+       // console.log(key);
         if (key) {
             url.searchParams.set('search_query', key);
             window.location.href = url.href;
@@ -36,8 +38,8 @@ if (formSearch) {
     });
 }
 
+// Pagination
 const pagination = document.querySelectorAll('[button-pagination]');
-//console.log(pagination);
 if (pagination.length > 0) {
     const url = new URL(window.location.href);
     pagination.forEach((button) => {
@@ -49,6 +51,7 @@ if (pagination.length > 0) {
     });
 }
 
+// Check-box
 const productsTable = document.querySelector('[check-multi]');
 if (productsTable) {
     const changeMultiForm = document.querySelector('[form-change-multi]');
@@ -105,6 +108,22 @@ if (productsTable) {
     });
 }
 
+// Preview Image
+const uploadImg = document.querySelector('[img-upload]');
+if(uploadImg){
+    const uploadInput = uploadImg.querySelector('[img-upload-input]');
+    const uploadPreview = uploadImg.querySelector('[img-upload-preview]');
+
+    uploadInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file){
+            uploadPreview.src = URL.createObjectURL(file);
+        }
+    });
+}
+
+
+// Alert
 const showAlert = document.querySelector('[show-alert]');
 if (showAlert) {
     const time = parseInt(showAlert.getAttribute('data-time'));
@@ -120,6 +139,7 @@ if (showAlert) {
 }
 
 
+// Filter
 const productFilter = document.querySelector('[sort]');
 if (productFilter) {
     const url = new URL(window.location.href);
@@ -148,7 +168,7 @@ if (productFilter) {
     }
 }
 
-
+// Paragraph Editor TinyMCE
 tinymce.init({
     selector: 'textarea'
 });
