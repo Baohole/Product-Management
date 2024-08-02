@@ -169,7 +169,7 @@ module.exports.editProduct = async (req, res) => {
     res.render('admin/pages/products/edit', {
         pageTitle: 'Chỉnh sửa sản phẩm',
         product: product
-    });;
+    });
 }
 
 // [PATCH] admin/products/edit
