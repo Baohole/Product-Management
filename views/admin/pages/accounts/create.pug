@@ -6,97 +6,97 @@ block main
 
     +alert-success(3000)
     +alert-fail(5000)
-    
-    h1(class="mb-4") Thêm tài khoản
+    if (role.permissions.includes('accounts-create'))
+        h1(class="mb-4") Thêm tài khoản
 
-    form(
-        action= `${prefixAdmin}/accounts/create` 
-        id="form-create-account" 
-        method="POST"
-        enctype="multipart/form-data"
-    )
-        div(class="form-group")
-            label(for="fullName") Họ và tên
-            input(
-                type="text" 
-                class="form-control"
-                id="fullName"
-                name="fullName" 
-                required
-            )
-        div(class="form-group")
-            label(for="password") Mật khẩu 
-            input(
-                type="password"
-                class="form-control"
-                id="password" 
-                name="password"   
-            )
-        div(class="form-group")
-            label(for="email") Email 
-            input(
-                class="form-control"
-                id="email" 
-                name="email"   
-                rows="5"
-            )
-        div(class="form-group")
-            label(for="phone") Điện thoại 
-            input(
-                class="form-control"
-                id="phone" 
-                name="phone"   
-                rows="5"
-            )
-        div(class="form-group")
-            label(for="role_id") Quyền 
-            select(
-                class="form-control" 
-                id="role_id" 
-                name="role_id" 
-            )
-                option(value="") ---chọn---
-                each item in roles
-                    option(value=item.id) #{item.title}
-        div(
-            class="form-group"
-            img-upload
+        form(
+            action= `${prefixAdmin}/accounts/create` 
+            id="form-create-account" 
+            method="POST"
+            enctype="multipart/form-data"
         )
-            label(for="thumbnail") Avatar
-            input(
-                type="file"
-                class="form-control"
-                id="avatar"
-                name="avatar"
-                accept='image/* '
-                img-upload-input
+            div(class="form-group")
+                label(for="fullName") Họ và tên
+                input(
+                    type="text" 
+                    class="form-control"
+                    id="fullName"
+                    name="fullName" 
+                    required
+                )
+            div(class="form-group")
+                label(for="password") Mật khẩu 
+                input(
+                    type="password"
+                    class="form-control"
+                    id="password" 
+                    name="password"   
+                )
+            div(class="form-group")
+                label(for="email") Email 
+                input(
+                    class="form-control"
+                    id="email" 
+                    name="email"   
+                    rows="5"
+                )
+            div(class="form-group")
+                label(for="phone") Điện thoại 
+                input(
+                    class="form-control"
+                    id="phone" 
+                    name="phone"   
+                    rows="5"
+                )
+            div(class="form-group")
+                label(for="role_id") Quyền 
+                select(
+                    class="form-control" 
+                    id="role_id" 
+                    name="role_id" 
+                )
+                    option(value="") ---chọn---
+                    each item in roles
+                        option(value=item.id) #{item.title}
+            div(
+                class="form-group"
+                img-upload
             )
-            img(
-                src=""
-                style ='width: 100px'
-                img-upload-preview
-            )
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio" 
-                class="form-check-input" 
-                id="statusActive"
-                name="status"
-                value="active" checked
-            )
-            label(for="statusActive" class="form-check-label") Hoạt động
-        div(class="form-group form-check form-check-inline")
-            input(
-                type="radio" 
-                class="form-check-input"
-                id="statusInactive"
-                name="status" 
-                value="inactive"
-            )
-            label(for="statusInActive" class="form-check-label") Dừng hoạt động
-        div(class="form-group")
-            button(
-                type="submit"
-                class='btn btn-primary') Tạo mới 
+                label(for="thumbnail") Avatar
+                input(
+                    type="file"
+                    class="form-control"
+                    id="avatar"
+                    name="avatar"
+                    accept='image/* '
+                    img-upload-input
+                )
+                img(
+                    src=""
+                    style ='width: 100px'
+                    img-upload-preview
+                )
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio" 
+                    class="form-check-input" 
+                    id="statusActive"
+                    name="status"
+                    value="active" checked
+                )
+                label(for="statusActive" class="form-check-label") Hoạt động
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio" 
+                    class="form-check-input"
+                    id="statusInactive"
+                    name="status" 
+                    value="inactive"
+                )
+                label(for="statusInActive" class="form-check-label") Dừng hoạt động
+            div(class="form-group")
+                button(
+                    type="submit"
+                    class='btn btn-primary') Tạo mới 
 
 

@@ -47,3 +47,30 @@ if(permissionDefault){
         //console.log(input);
     });
 }
+
+// Check-box
+const productsTable = document.querySelector('[table-permission]');
+if (productsTable) {
+    const checkAll = productsTable.querySelectorAll('input[name=check-all]');
+
+    console.log(checkAll);
+    checkAll.forEach(box => {
+        //console.log(box);
+        const attribute = box.getAttribute('data-name');
+        console.log(attribute);
+        const checkId = productsTable.querySelectorAll(`input[name=${attribute}]`);
+        console.log(checkId);
+        // box.addEventListener('click', () => {
+        //    console.log(checkId);
+        // });
+    });
+    
+
+    // checkId.forEach(check => {
+    //     check.addEventListener('click', () => {
+    //         const countChecked = productsTable.querySelectorAll('input[name=id]:checked').length;
+    //         checkAll.checked = countChecked === checkId.length;
+    //     });
+    // });
+}
+

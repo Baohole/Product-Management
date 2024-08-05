@@ -5,7 +5,7 @@ const controller = require('../../controllers/admin/products.controller');
 const validate = require('../../validate/admin/product.validate');
 
 
-const cloudUpload = require('../../middleware/upload.middleware');
+const cloudUpload = require('../../middleware/admin/upload.middleware');
 const multer  = require('multer');
 const upload = multer();
 

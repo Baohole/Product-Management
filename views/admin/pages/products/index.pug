@@ -13,7 +13,7 @@ block main
     +alert-fail(5000)
     
     h1 Trang sản phẩm
-    
+    //-div #{role.permissions}
     .card.mb-3  
         .card-header Sắp xếp
         .card-body 
@@ -37,10 +37,11 @@ block main
                 .col-10
                     +formChange(`${prefixAdmin}/products/change-multi?_method=PATCH`)
                 .col-2
-                    a(
-                        href=`${prefixAdmin}/products/create`
-                        class='btn btn-outline-success'
-                    ) + Thêm mới
+                    if (role.permissions.includes('products-create'))
+                        a(
+                            href=`${prefixAdmin}/products/create`
+                            class='btn btn-outline-success'
+                        ) + Thêm mới
 
             table(
                 class="table table-hover table-sm"
@@ -95,16 +96,19 @@ block main
                                         data-id = item.id
                                         button-change-status) Dừng hoạt động
                             td 
+                                   
                                 a(
                                     href=`${prefixAdmin}/products/${item.slug}`
                                     class='btn btn-secondary btn-sm') Chi tiết 
-                                a(
-                                    href=`${prefixAdmin}/products/edit/${item.id}`
-                                    class='btn btn-warning btn-sm') Sửa 
-                                button(
-                                    class='btn btn-danger btn-sm'
-                                    data-id = item.id
-                                    button-delete) Xóa
+                                if (role.permissions.includes('products-edit'))
+                                    a(
+                                        href=`${prefixAdmin}/products/edit/${item.id}`
+                                        class='btn btn-warning btn-sm') Sửa 
+                                if (role.permissions.includes('products-delete'))
+                                    button(
+                                        class='btn btn-danger btn-sm'
+                                        data-id = item.id
+                                        button-delete) Xóa
 
     nav
         ul(class="pagination")

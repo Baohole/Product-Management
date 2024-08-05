@@ -34,13 +34,15 @@ block main
         .card-header Danh sách
         .card-body 
             .row 
-                .col-10
-                    +formChange(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
+                //- .col-10
+                //-     +formChange(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
+
                 .col-2
-                    a(
-                        href=`${prefixAdmin}/categories/create`
-                        class='btn btn-outline-success'
-                    ) + Thêm sản phẩm
+                    if (role.permissions.includes('categories-create'))
+                        a(
+                            href=`${prefixAdmin}/categories/create`
+                            class='btn btn-outline-success'
+                        ) + Thêm sản phẩm
 
             table(
                 class="table table-hover table-sm"
@@ -95,13 +97,15 @@ block main
                                         data-id = item.id
                                         button-change-status) Dừng hoạt động
                             td 
-                                a(
-                                    href=`${prefixAdmin}/categories/edit/${item.id}`
-                                    class='btn btn-warning btn-sm') Sửa 
-                                button(
-                                    class='btn btn-danger btn-sm'
-                                    data-id = item.id
-                                    button-delete) Xóa
+                                if (role.permissions.includes('categories-edit'))    
+                                    a(
+                                        href=`${prefixAdmin}/categories/edit/${item.id}`
+                                        class='btn btn-warning btn-sm') Sửa 
+                                if (role.permissions.includes('categories-delete'))
+                                    button(
+                                        class='btn btn-danger btn-sm'
+                                        data-id = item.id
+                                        button-delete) Xóa
 
     //- nav
     //-     ul(class="pagination")

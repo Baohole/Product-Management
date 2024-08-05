@@ -2,6 +2,8 @@ const Account = require('../../models/accounts.model');
 const Role = require('../../models/roles.model');
 
 const md5 = require('md5');
+const jwt = require('jsonwebtoken');
+
 // [GET] admin/accounts
 module.exports.index = async (req, res) => {
     const accounts = await Account.find({deleted: false});
@@ -27,8 +29,10 @@ module.exports.createAccount = async (req, res) => {
 // [POST] admin/accounts/creat
 module.exports.createAccountPost = async (req, res) => {
     req.body.password = (md5(req.body.password));
+    req.body.token = jwt.sign(req.body.email, process.env.JWT_SECRECT);
     const account = new Account(req.body);
     await account.save();
+    //res.send('OK');
     res.redirect('back');
    
 }

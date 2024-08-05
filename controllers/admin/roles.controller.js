@@ -23,7 +23,7 @@ module.exports.creatRole = async (req, res) => {
 // [POST] admin/roles/creat
 module.exports.creatRolePost = async (req, res) => {
     const data = req.body;
-    console.log(data);
+    //console.log(data);
 
     const role = new Role(data);
     try {
@@ -54,6 +54,7 @@ module.exports.permission = async (req, res) => {
 // [PATCH] admin/roles/permissions
 module.exports.permissionPatch = async (req, res) => {
     const datas = JSON.parse(req.body.permissions);
+    //console.log(datas);
     for(const data of datas){
         await Role.updateOne({_id : data.id}, {permissions: data.permissions});
     };
