@@ -22,5 +22,5 @@ router.post('/create', upload.single('thumbnail'), validate.validateTitle, cloud
 router.get('/edit/:id', controller.editProduct);
 router.patch('/edit/:id', upload.single('thumbnail'), validate.validateTitle, cloudUpload.cloudUpload, controller.editProductPatch);
 
-//router.get('/:slug', controller.productDetail);
+router.get('/:id', controller.productDetail);
 module.exports = router;

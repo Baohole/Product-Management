@@ -42,7 +42,7 @@ block main
                             href=`${prefixAdmin}/products/create`
                             class='btn btn-outline-success'
                         ) + Thêm mới
-
+            br
             table(
                 class="table table-hover table-sm"
                 check-multi=''
@@ -98,7 +98,7 @@ block main
                             td 
                                    
                                 a(
-                                    href=`${prefixAdmin}/products/${item.slug}`
+                                    href=`${prefixAdmin}/products/${item.id}`
                                     class='btn btn-secondary btn-sm') Chi tiết 
                                 if (role.permissions.includes('products-edit'))
                                     a(

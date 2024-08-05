@@ -1,0 +1,78 @@
+extends ../../layouts/default.pug
+include ../../mixins/formatTime.pug
+
+block main
+  .container
+    h1.mb-4 Chi tiết sản phẩm
+    
+    .row.mb-4
+      .col-md-4
+        img.img-fluid.rounded(
+          src=product.thumbnail
+          alt="Ảnh sản phẩm"
+          style="max-width: 300px;"
+          img-upload-preview
+        )
+      
+      .col-md-8
+        .mb-3
+          strong.me-2 Tiêu đề:
+          span #{product.title}
+        
+        .mb-3
+          strong.me-2 Mô tả:
+          span !{product.description}
+        
+        .mb-3
+          strong.me-2 Giá:
+          span #{product.price}
+        
+        .mb-3
+          strong.me-2 % Giảm giá:
+          span #{product.discountPercentage}%
+        
+        .mb-3
+          strong.me-2 Số lượng:
+          span #{product.stock}
+        
+        .mb-3
+          strong.me-2 Vị trí:
+          span #{product.position}
+        
+        .mb-3
+          strong.me-2 Trạng thái:
+          if (product.status === 'active')
+            span.badge.bg-success Hoạt động
+          else
+            span.badge.bg-danger Dừng hoạt động
+
+    .table-responsive
+      table.table.table-hover.table-striped
+        thead 
+          tr
+            th(scope="col") STT
+            th(scope="col") Họ tên
+            th(scope="col") Hành động
+            th(scope="col") Thời gian
+        tbody
+          tr 
+            th(scope="row") 1
+            td #{product.createdBy.fullName}  
+            td Tạo sản phẩm
+            td 
+              +fullDetail(product.createdBy.createdAt)
+
+          each item, index in product.updatedBy 
+            tr 
+              th(scope="row") #{index + 2}
+              td #{item.fullName}
+              if (item.action == 'change-status')
+                td Thay đổi trạng thái 
+              else if (item.action == 'product-edit')
+                td Chỉnh sửa sản phẩm 
+              else if (item.action == 'change-position') 
+                td Thay đổi vị trí
+              else 
+                td 
+              td 
+                +fullDetail(item.updatedAt)
