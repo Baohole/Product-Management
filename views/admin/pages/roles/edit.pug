@@ -1,0 +1,60 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+
+block main
+
+    +alert-success(3000)
+    +alert-fail(5000)
+    if (role.permissions.includes('roles-edit'))
+        h1(class="mb-4") Thêm nhóm quyền
+
+        form(
+            action= `${prefixAdmin}/roles/edit/${permission.id}?_method=PATCH` 
+            id="form-create-role" 
+            method="POST"
+        )
+            div(class="form-group")
+                label(for="title") Tiêu đề 
+                input(
+                    type="text" 
+                    class="form-control"
+                    id="title"
+                    name="title" 
+                    value=permission.title
+                )
+            div(class="form-group")
+                label(for="desc") Mô tả 
+                textarea(
+                    class="form-control"
+                    id="desc" 
+                    name="description"   
+                    rows="5"
+                )=permission.description
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio" 
+                    class="form-check-input" 
+                    id="statusActive"
+                    name="status"
+                    value="active"
+                    checked=(permission.status == 'active')
+                )
+                label(for="statusActive" class="form-check-label") Hoạt động
+            div(class="form-group form-check form-check-inline")
+                input(
+                    type="radio" 
+                    class="form-check-input"
+                    id="statusInactive"
+                    name="status" 
+                    value="inactive"
+                    checked=(permission.status == 'inactive')
+                )
+                label(for="statusInActive" class="form-check-label") Dừng hoạt động
+            div(class="form-group")
+                button(
+                    type="submit"
+                    class='btn btn-primary') Thay đổi 
+
+
+

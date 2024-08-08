@@ -1,0 +1,25 @@
+extends ../../layouts/default.pug
+include ../../mixins/actionTable.pug
+
+block main
+  .container
+    h1.mb-4 Chi tiết nhóm quyền
+    
+    .card.mb-4
+      .card-body
+        .mb-3
+          strong.me-2 Tiêu đề:
+          span #{permission.title}
+        
+        .mb-3
+          strong.me-2 Mô tả:
+          span !{permission.description}
+        
+        .mb-3
+          strong.me-2 Trạng thái:
+          if (permission.status == 'active')
+            span.badge.bg-success Hoạt động
+          else 
+            span.badge.bg-danger Dừng hoạt động
+
+    +actionTable(permission)

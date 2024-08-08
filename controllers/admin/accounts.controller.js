@@ -4,17 +4,50 @@ const Role = require('../../models/roles.model');
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
 
+const filterHelper = require('../../helper/filter.helper');
+const searchHelper = require('../../helper/search.helper');
+const changeMulti = require('../../helper/changeMulti.helper');
+const getActionDetail = require('../../helper/getActionDetail.helper');
+
+
 // [GET] admin/accounts
 module.exports.index = async (req, res) => {
-    const accounts = await Account.find({deleted: false});
-    const roles = await Role.find({deleted: false});
-
+    const filterStatus = filterHelper(req.query);
+    const searchStatus = searchHelper(req.query);
+    
+        //console.log(searchStatus);
+    const find = {
+        deleted: false
+    }
+    if(req.query.status){
+        find.status = req.query.status;
+    }
+    if(searchStatus.regex){
+        find.fullName = searchStatus.regex;
+    }
+    
+    const accounts = await Account.find(find)
+    const roles = await Role.find(find);
     res.render( 'admin/pages/accounts/index',{
         pageTitle: 'Danh sách tài khoản',
         accounts: accounts,
-        roles: roles
+        roles: roles,
+        filterStatus: filterStatus,
+        find: searchStatus.keyword
     });
 }
+
+// [PATCH] admin/products/change-status
+module.exports.changeStatus = async (req, res) => {
+    changeMulti.changeStatus(req, res, Account);
+   
+}
+
+// [PATCH] admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+    changeMulti.changeMulti(req, res, Account);
+}
+
 
 // [GET] admin/accounts/creat
 module.exports.createAccount = async (req, res) => {
@@ -55,24 +88,28 @@ module.exports.editAccount = async (req, res) => {
 
 // [PATCH] admin/products/edit
 module.exports.editAccountPatch = async (req, res) => {
-    const data = req.body;
-    if(data.password){
-        data.password = md5(data.password);
-    }
-    else{
-        delete data.password;
+    changeMulti.editItem(req, res, Account);
+}
+
+
+// [GET] admin/accounts/:id
+module.exports.accountDetail = async (req, res) => {
+    //console.log(req.params);
+    const find = {
+        _id: req.params.id,
+        deleted : false
     }
 
-    
-    //console.log(data);
-    try {
-        await Account.updateOne({_id: req.params.id}, data);
-        req.flash('success', `Cập nhật thành công!!`);
-    } catch (error) {
-        req.flash('error', "Cập nhật thất bại!!");
-    }   
-  
-    //console.log(data.id);
-    res.redirect('back');
-    
+    const account = await Account.findOne(find).select('-password');
+    const role = await Role.findOne({
+        _id: account.role_id,
+        deleted: false
+    });
+    account.role_name =  role.title;
+    await getActionDetail.getDetail(req, res, account);
+
+    res.render('admin/pages/accounts/detail', {
+        pageTitle: 'Chi tiết sản phẩm',
+        account: account
+    });
 }

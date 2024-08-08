@@ -1,0 +1,15 @@
+mixin formAction(path)
+    form(
+        action=""
+        data-path=`/admin/${path}/change-status/`
+        method = 'POST'
+        id='change-status-form'
+    )
+
+    form(
+        action=""
+        data-path=`/admin/${path}/delete/`
+        method = 'POST'
+        id='delete-form'
+    )
+

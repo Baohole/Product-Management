@@ -1,6 +1,6 @@
 mixin formChange(path)
     form(
-        action=path
+        action=`${prefixAdmin}/${path}/change-multi?_method=PATCH`
         method='POST'
         form-change-multi
     )
@@ -10,7 +10,8 @@ mixin formChange(path)
                     option(disable selected value="") ---chọn---
                     option(value="active") Hoạt động
                     option(value="inactive") Dừng hoạt động
-                    option(value="position") Thay đổi vị trí
+                    if (path=='products')
+                        option(value="position") Thay đổi vị trí
                     option(value="delete") Xóa
             .form-group    
                 input(

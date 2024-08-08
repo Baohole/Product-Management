@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/hierarchy.pug
 block main
     
     +alert-success(3000)
@@ -25,13 +25,26 @@ block main
                     value= product.title
                 )
             div(class="form-group")
+                label(for="category_id") Danh mục
+                select(
+                    class="form-control" 
+                    id="category_id" 
+                    name="category_id" 
+                )
+                    if (product.category_id == "")
+                        option(value="" selected) ---Không----
+                        +selectParentCategory(categories, 1 , product.category_id)
+                    else
+                        +selectParentCategory(categories, 1 , product.category_id)
+                        option(value="") ---Không----
+            div(class="form-group")
                 label(for="desc") Mô tả 
                 textarea(
                     class="form-control"
                     id="desc" 
                     name="description"   
                     rows="5"
-                )= product.description
+                ) !{product.description}
             div(class="form-group")
                 label(for="price") Giá 
                 input(
@@ -113,12 +126,29 @@ block main
                     checked=(product.status==='inactive')
                 )
                 label(for="statusInActive" class="form-check-label") Dừng hoạt động
+            br
+            br
+            div(class="form-group")
+                input(
+                    type="checkbox" 
+                    class="form-check-input"
+                    id="featured"
+                    name="featured" 
+                    value="1"
+                    checked=(product.featured)
+                )
+                label(
+                    for="featured" 
+                    class="form-check-label" 
+                    style='color: red'
+                )   Sản phẩm nổi bật *
+            br
+           
             div(class="form-group")
                 button(
                     type="submit"
                     class='btn btn-primary') Thay đổi 
-
-    script(src="/admin/js/product.js")  
+ 
 
 
 

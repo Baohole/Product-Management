@@ -3,3 +3,9 @@ mixin categoriesTree(records, level = 1)
         option(value=item.id)= '-- '.repeat(level - 1) + item.title
         if item.child && item.child.length > 0
             +categoriesTree(item.child, level + 1)
+
+mixin selectParentCategory(records, level = 1, id)
+    each item in records
+        option(value=item.id selected=(id == item.id))= '-- '.repeat(level - 1) + item.title
+        if item.child && item.child.length > 0
+            +selectParentCategory(item.child, level + 1, id)

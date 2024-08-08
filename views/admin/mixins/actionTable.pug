@@ -1,0 +1,34 @@
+include ./formatTime.pug
+
+
+mixin actionTable(data)
+    .table-responsive
+        table.table.table-hover.table-striped
+            thead 
+                tr
+                    th(scope="col") STT
+                    th(scope="col") Họ tên
+                    th(scope="col") Hành động
+                    th(scope="col") Thời gian
+            tbody
+                tr 
+                    th(scope="row") 1
+                    td #{data.createdBy.fullName}  
+                    td Tạo mới
+                    td 
+                        +fullDetail(data.createdBy.createdAt)
+
+            each item, index in data.updatedBy 
+                tr 
+                th(scope="row") #{index + 2}
+                td #{item.fullName}
+                if (item.action == 'change-status')
+                    td Thay đổi trạng thái 
+                else if (item.action == `edit`)
+                    td Chỉnh sửa
+                else if (item.action == 'change-position') 
+                    td Thay đổi vị trí
+                else 
+                    td 
+                td 
+                    +fullDetail(item.updatedAt)

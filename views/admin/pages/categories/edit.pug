@@ -6,12 +6,12 @@ block main
 
     +alert-success(3000)
     +alert-fail(5000)
-    if (role.permissions.includes('products-create'))
-        h1(class="mb-4") Thêm mới sản phẩm
+    if (role.permissions.includes('products-category-create'))
+        h1(class="mb-4") Chỉnh sửa danh mục
 
         form(
-            action= `${prefixAdmin}/products/create` 
-            id="form-create-product" 
+            action= `${prefixAdmin}/categories/edit/${category.id}?_method=PATCH` 
+            id="form-create-category" 
             method="POST"
             enctype="multipart/form-data"
         )
@@ -21,54 +21,31 @@ block main
                     type="text" 
                     class="form-control"
                     id="title"
-                    name="title" 
+                    name="title"
+                    value=category.title 
                     required
                 )
             div(class="form-group")
-                label(for="category_id") Danh mục
+                label(for="parent_id") Danh mục cha 
                 select(
                     class="form-control" 
-                    id="category_id" 
-                    name="category_id" 
+                    id="parent_id" 
+                    name="parent_id" 
                 )
-                    option(value="") ---chọn danh mục---
-                    +categoriesTree(categories)
+                    if (category.parent_id == "")
+                        option(value="" selected) ---Không----
+                        +selectParentCategory(records, 1 , category.parent_id)
+                    else
+                        +selectParentCategory(records, 1 , category.parent_id)
+                        option(value="") ---Không----
             div(class="form-group")
                 label(for="desc") Mô tả 
                 textarea(
                     class="form-control"
                     id="desc" 
-                    name="description"   
+                    name="description"  
+                    value=category.description
                     rows="5"
-                )
-            div(class="form-group")
-                label(for="price") Giá 
-                input(
-                    type="number" 
-                    class="form-control" 
-                    id="price" 
-                    name="price" 
-                    value="0" 
-                    min="0"
-                )
-            div(class="form-group" )
-                label(for="discount") % Giảm giá 
-                input(
-                    type= "number" 
-                    class="form-control" 
-                    id="discount" name="discountPercentage" 
-                    value="0" 
-                    min="0"
-                )
-            div(class="form-group" )
-                label(for="stock") Số lượng 
-                input(
-                    type="number"
-                    class="form-control"
-                    id="stock"
-                    name="stock"
-                    value="0"
-                    min="0"
                 )
             div(
                 class="form-group"
@@ -95,7 +72,7 @@ block main
                     class="form-control"
                     id="position"
                     name="position"
-                    placeholder="Tự động tăng" 
+                    value=category.position
                     min="1"
                 )
             div(class="form-group form-check form-check-inline")
@@ -104,7 +81,8 @@ block main
                     class="form-check-input" 
                     id="statusActive"
                     name="status"
-                    value="active" checked
+                    value="active"
+                    checked=(category.status==='active')
                 )
                 label(for="statusActive" class="form-check-label") Hoạt động
             div(class="form-group form-check form-check-inline")
@@ -114,33 +92,11 @@ block main
                     id="statusInactive"
                     name="status" 
                     value="inactive"
+                    checked=(category.status==='inactive')
                 )
                 label(for="statusInActive" class="form-check-label") Dừng hoạt động
-
-            br
-            br
-            div(class="form-group")
-                input(
-                    type="checkbox" 
-                    class="form-check-input"
-                    id="featured"
-                    name="featured" 
-                    value="1"
-                )
-                label(
-                    for="featured" 
-                    class="form-check-label" 
-                    style='color: red'
-                )   Sản phẩm nổi bật *
-            br
             div(class="form-group")
                 button(
                     type="submit"
-                    class='btn btn-primary') Tạo mới 
+                    class='btn btn-primary') Thay đổi 
 
-
-
-
-
-
-        

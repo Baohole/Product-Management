@@ -20,7 +20,6 @@ deleteItem.forEach((button) => {
         if(ifConfirm) { 
             const id = button.getAttribute('data-id');
             const deleteForm = document.querySelector('#delete-form');
-            const path = deleteForm.getAttribute('data-path');
             //console.log(path);
             deleteForm.action = deleteForm.getAttribute('data-path') + `${id}?_method=DELETE`;
             deleteForm.submit();

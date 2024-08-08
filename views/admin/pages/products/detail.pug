@@ -1,5 +1,5 @@
 extends ../../layouts/default.pug
-include ../../mixins/formatTime.pug
+include ../../mixins/actionTable.pug
 
 block main
   .container
@@ -18,7 +18,13 @@ block main
         .mb-3
           strong.me-2 Tiêu đề:
           span #{product.title}
-        
+          if (product.featured)
+            span.badge.bg-warning.text-dark.featured nổi bật
+
+        .mb-3
+          strong.me-2 Danh mục:
+          span #{product.category_name}
+
         .mb-3
           strong.me-2 Mô tả:
           span !{product.description}
@@ -45,34 +51,6 @@ block main
             span.badge.bg-success Hoạt động
           else
             span.badge.bg-danger Dừng hoạt động
-
-    .table-responsive
-      table.table.table-hover.table-striped
-        thead 
-          tr
-            th(scope="col") STT
-            th(scope="col") Họ tên
-            th(scope="col") Hành động
-            th(scope="col") Thời gian
-        tbody
-          tr 
-            th(scope="row") 1
-            td #{product.createdBy.fullName}  
-            td Tạo sản phẩm
-            td 
-              +fullDetail(product.createdBy.createdAt)
-
-          each item, index in product.updatedBy 
-            tr 
-              th(scope="row") #{index + 2}
-              td #{item.fullName}
-              if (item.action == 'change-status')
-                td Thay đổi trạng thái 
-              else if (item.action == 'product-edit')
-                td Chỉnh sửa sản phẩm 
-              else if (item.action == 'change-position') 
-                td Thay đổi vị trí
-              else 
-                td 
-              td 
-                +fullDetail(item.updatedAt)
+  
+   
+    +actionTable(product)

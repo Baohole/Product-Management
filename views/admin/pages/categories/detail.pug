@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug
+include ../../mixins/actionTable.pug
+
+block main
+  .container
+    h1.mb-4 Chi tiết sản phẩm
+    
+    .row.mb-4
+      .col-md-4
+        img.img-fluid.rounded(
+          src=category.thumbnail
+          alt="Ảnh"
+          style="max-width: 300px;"
+          img-upload-preview
+        )
+      
+      .col-md-8
+        .mb-3
+          strong.me-2 Tiêu đề:
+          span #{category.title}
+        
+        .mb-3
+        strong.me-2 Danh mục cha:
+        span #{category.parentTitle}
+        .mb-3
+          strong.me-2 Mô tả:
+          span !{category.description}
+      
+        .mb-3
+          strong.me-2 Vị trí:
+          span #{category.position}
+        
+        .mb-3
+          strong.me-2 Trạng thái:
+          if (category.status === 'active')
+            span.badge.bg-success Hoạt động
+          else
+            span.badge.bg-danger Dừng hoạt động
+
+    +actionTable(category)

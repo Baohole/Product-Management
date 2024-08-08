@@ -5,7 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-status.pug
 include ../../mixins/alert.pug
 include ../../mixins/product-filter.pug
-
+include ../../mixins/formAction.pug
 
 block main
 
@@ -35,7 +35,7 @@ block main
         .card-body 
             .row 
                 .col-10
-                    +formChange(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                    +formChange(`products`)
                 .col-2
                     if (role.permissions.includes('products-create'))
                         a(
@@ -115,20 +115,4 @@ block main
            +pagination(pagination)
 
     
-    form(
-        action=""
-        data-path='/admin/products/change-status/'
-        method = 'POST'
-        type='hidden'
-        id='change-status-form'
-    )
-
-    form(
-        action=""
-        data-path='/admin/products/delete/'
-        method = 'POST'
-        type='hidden'
-        id='delete-form'
-    )
-
-    script(src="/admin/js/product.js") 
+    +formAction('products')

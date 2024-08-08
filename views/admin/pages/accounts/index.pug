@@ -5,7 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-status.pug
 include ../../mixins/alert.pug
 include ../../mixins/product-filter.pug
-
+include ../../mixins/formAction.pug
 
 block main
 
@@ -20,22 +20,22 @@ block main
     //-         .row
     //-             .col-4
     //-                 +product-filter()
-    //- .card.mb-3  
-    //-     .card-header Bộ lọc và Tìm kiếm 
-    //-     .card-body 
-    //-         .row
-    //-             .col-6
-    //-                 +filterStatus(filterStatus)
+    .card.mb-3  
+        .card-header Bộ lọc và Tìm kiếm 
+        .card-body 
+            .row
+                .col-6
+                    +filterStatus(filterStatus)
 
-    //-             .col-6 
-    //-                +search-form(find)
+                .col-6 
+                   +search-form(find)
    
     .card.mb-3  
         .card-header Danh sách
         .card-body 
             .row 
-                //- .col-10
-                //-     +formChange(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
+                .col-10
+                    +formChange(`accounts`)
                 .col-2
                     if (role.permissions.includes('accounts-create'))
                         a(
@@ -88,6 +88,9 @@ block main
                                         data-id = item.id
                                         button-change-status) Dừng hoạt động
                             td 
+                                a(
+                                    href=`${prefixAdmin}/accounts/${item.id}`
+                                    class='btn btn-secondary btn-sm') Chi tiết
                                 if (role.permissions.includes('accounts-edit'))                                
                                     a(
                                         href=`${prefixAdmin}/accounts/edit/${item.id}`
@@ -97,3 +100,5 @@ block main
                                         class='btn btn-danger btn-sm'
                                         data-id = item.id
                                         button-delete) Xóa
+
+    +formAction('accounts')

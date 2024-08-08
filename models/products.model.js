@@ -12,11 +12,16 @@ const productsSchema = new mongoose.Schema({
     thumbnail: String,
     status: String,
     position: Number,
+    category_id: String,
+    featured: {
+        type: Boolean,
+        default: false
+    },
     createdBy: {
         account_id: String,
         createdAt :{
             type: Date,
-            default: Date.now
+            default: Date.now()
         }
     },
     slug: { 
@@ -39,8 +44,6 @@ const productsSchema = new mongoose.Schema({
         updatedAt: Date
 
     }]
-},{
-    timestamps: true
 });
 const Product = mongoose.model('Product', productsSchema, 'products');
 module.exports = Product;

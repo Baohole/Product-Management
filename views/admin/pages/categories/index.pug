@@ -5,14 +5,14 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-status.pug
 include ../../mixins/alert.pug
 include ../../mixins/product-filter.pug
-
+include ../../mixins/formAction.pug
 
 block main
 
     +alert-success(3000)
     +alert-fail(5000)
     
-    h1 Trang sản phẩm
+    h1 Trang  danh mục sản phẩm
     
     //- .card.mb-3  
     //-     .card-header Sắp xếp
@@ -20,29 +20,29 @@ block main
     //-         .row
     //-             .col-4
     //-                 +product-filter()
-    //- .card.mb-3  
-    //-     .card-header Bộ lọc và Tìm kiếm 
-    //-     .card-body 
-    //-         .row
-    //-             .col-6
-    //-                 +filterStatus(filterStatus)
+    .card.mb-3  
+        .card-header Bộ lọc và Tìm kiếm 
+        .card-body 
+            .row
+                .col-6
+                    +filterStatus(filterStatus)
 
-    //-             .col-6 
-    //-                +search-form(find)
+                .col-6 
+                   +search-form(find)
    
     .card.mb-3  
         .card-header Danh sách
         .card-body 
             .row 
-                //- .col-10
-                //-     +formChange(`${prefixAdmin}/categories/change-multi?_method=PATCH`)
+                .col-10
+                    +formChange(`categories`)
 
                 .col-2
-                    if (role.permissions.includes('categories-create'))
+                    if (role.permissions.includes('products-category-create'))
                         a(
                             href=`${prefixAdmin}/categories/create`
                             class='btn btn-outline-success'
-                        ) + Thêm sản phẩm
+                        ) + Thêm mới
 
             table(
                 class="table table-hover table-sm"
@@ -97,11 +97,14 @@ block main
                                         data-id = item.id
                                         button-change-status) Dừng hoạt động
                             td 
-                                if (role.permissions.includes('categories-edit'))    
+                                a(
+                                    href=`${prefixAdmin}/categories/${item.id}`
+                                    class='btn btn-secondary btn-sm') Chi tiết 
+                                if (role.permissions.includes('products-category-edit'))    
                                     a(
                                         href=`${prefixAdmin}/categories/edit/${item.id}`
                                         class='btn btn-warning btn-sm') Sửa 
-                                if (role.permissions.includes('categories-delete'))
+                                if (role.permissions.includes('products-category-delete'))
                                     button(
                                         class='btn btn-danger btn-sm'
                                         data-id = item.id
@@ -109,7 +112,5 @@ block main
 
     //- nav
     //-     ul(class="pagination")
-    //-        +pagination(pagination)
-
-    
-    script(src="/admin/js/product.js") 
+    //-        +pagination(pagination) 
+    +formAction('categories')

@@ -1,0 +1,41 @@
+extends ../../layouts/default.pug
+include ../../mixins/actionTable.pug
+
+block main
+  .container
+    h1.mb-4 Chi tiết sản phẩm
+    
+    .row.mb-4
+      .col-md-4
+        img.img-fluid.rounded(
+          src=account.avatar
+          alt="Ảnh sản phẩm"
+          style="max-width: 300px;"
+          img-upload-preview
+        )
+      
+      .col-md-8
+        .mb-3
+          strong.me-2 Họ tên:
+          span #{account.fullName}
+        
+        .mb-3
+          strong.me-2 Số điện thoại:
+          span !{account.phone}
+        
+        .mb-3
+          strong.me-2 Email:
+          span #{account.email}
+        
+        .mb-3
+          strong.me-2 Quyền:
+          span #{account.role_name}
+        
+        .mb-3
+          strong.me-2 Trạng thái:
+          if (account.status === 'active')
+            span.badge.bg-success Hoạt động
+          else
+            span.badge.bg-danger Dừng hoạt động
+
+    +actionTable(account)
