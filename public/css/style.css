@@ -65,6 +65,7 @@
     width: 10%;
     aspect-ratio: 4/3;
     border-bottom: 1px solid #ddd;
+    position: relative;
 }
 
 
@@ -72,6 +73,18 @@
     width: 100%;
     height: 100%;
     object-fit: cover
+}
+
+.product-item .inner-featured { 
+    position: absolute;
+    top: 0; 
+    right: 0; 
+    background:orange;
+    color:black;
+    padding: 3px 6px; 
+    font-weight: 600; 
+    font-size: 14px; 
+    border-radius: 8px
 }
 
 .product-item .inner-content {
@@ -111,6 +124,7 @@
     padding: 3px 10px;
     border-radius: 8px;
 }
+
 
 /* sub-menu */
 .sub-menu {
@@ -153,3 +167,4 @@
 }
 
 /* End sub-menu */
+
