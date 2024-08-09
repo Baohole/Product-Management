@@ -31,7 +31,8 @@ block main
                     id="category_id" 
                     name="category_id" 
                 )
-                    if (product.category_id == "")
+                
+                    if (product.category_id == "" || !product.category_id)
                         option(value="" selected) ---Không----
                         +selectParentCategory(categories, 1 , product.category_id)
                     else

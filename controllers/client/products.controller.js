@@ -1,4 +1,6 @@
 const Product = require('../../models/products.model');
+const Category = require('../../models/categories.model');
+const subCategory = require('../../helper/subCategory.helper');
 
 const productHelper = require('../../helper/products.helper');
 // [GET] /
@@ -31,5 +33,29 @@ module.exports.index = async (req, res) => {
         pageTitle: 'Trang sản phẩm',
         products: products,
         pagination: pagination
+    });
+}
+
+// [GET] /:slugCategory
+module.exports.prouctByCategory = async (req, res) => {
+    const category = await Category.findOne({
+        slug: req.params.slugCategory,
+        deleted: false
+    });
+   
+    
+    const records = await subCategory.suCategory(category);
+    //console.log(records);
+    const products = await Product.find({
+        category_id: {$in: records},
+        deleted: false,
+        status: 'active'
+    });
+    //console.log(products);
+    productHelper.newPrice(products);
+    
+    res.render('client/pages/products/slugCategory', {
+        pageTitle: records.title,
+        products: products
     });
 }
