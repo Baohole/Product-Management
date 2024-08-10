@@ -18,15 +18,15 @@ module.exports.index = async (req, res) => {
     if (req.query.page) {
         pagination.currentPage = parseInt(req.query.page);
     }
-    let total =  await Product.countDocuments(find);
+    let total = await Product.countDocuments(find);
     pagination.totalPages = Math.ceil(total / pagination.limitItems);
     pagination.skip = (pagination.currentPage - 1) * pagination.limitItems;
     //console.log(pagination.totalPages);
 
     let products = await Product.find(find)
-                                .limit(pagination.limitItems)
-                                .skip(pagination.skip)
-                                .sort({position: 1});
+        .limit(pagination.limitItems)
+        .skip(pagination.skip)
+        .sort({ position: 1 });
 
     productHelper.newPrice(products);
     res.render('client/pages/products/index', {
@@ -42,20 +42,36 @@ module.exports.prouctByCategory = async (req, res) => {
         slug: req.params.slugCategory,
         deleted: false
     });
-   
-    
+
+
     const records = await subCategory.suCategory(category);
     //console.log(records);
     const products = await Product.find({
-        category_id: {$in: records},
+        category_id: { $in: records },
         deleted: false,
         status: 'active'
     });
     //console.log(products);
     productHelper.newPrice(products);
-    
+
     res.render('client/pages/products/slugCategory', {
         pageTitle: records.title,
         products: products
+    });
+}
+
+// [GET] /detail/:slugProduct
+module.exports.prouctDetail = async (req, res) => {
+    const product = await Product.findOne({
+        slug: req.params.slugProduct,
+    });
+    
+    if(product.category_id){
+        const category = await Category.findOne({ _id: product.category_id });
+        product.category_name = category.title;
+    }
+    res.render('client/pages/products/detail', {
+        pageTitle: product.title,
+        product: product
     });
 }
