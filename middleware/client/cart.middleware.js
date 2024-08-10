@@ -9,6 +9,12 @@ module.exports = async (req, res, next) => {
             expires : new Date(Date.now() + maxAge)
         });
     }
-    else{}
+    else{
+        const cartId = req.cookies.cartId;
+        const cart = await Cart.findOne({
+            _id : cartId
+        });
+        res.locals.totalQuantity = cart.products.reduce((sum, item) => sum + item.quantity, 0);
+    }
     next();
 }

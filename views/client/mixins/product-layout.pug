@@ -3,7 +3,7 @@ mixin product-grid(data)
         each item in data
             .col-4.mb-3    
                 .product-item
-                    a(href = `products/detail/${item.slug}`)
+                    a(href = `/products/detail/${item.slug}`)
                         .inner-image  
                             img(src=item.thumbnail, alt=item.title)
                             if (item.featured)

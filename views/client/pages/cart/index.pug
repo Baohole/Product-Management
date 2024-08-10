@@ -1,0 +1,67 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/pagination.pug
+include ../../mixins/product-layout.pug
+
+block main
+    .container
+        .row
+            .col-12
+               +box-head('Giỏ hàng')
+        .row
+            .col-12
+                table.table.table-hover.table-sm(check-multi='')
+                    thead
+                        tr
+                            th
+                                .form-check
+                                    input#checkboxNoLabel.form-check-input(type='checkbox' value='' aria-label='...' name='check-all')
+                                    label.form-check-label(for='checkboxNoLabel') Tất cả
+                            th Hình ảnh
+                            th Tên sản phẩm
+                            th Giá
+                            th Số lượng
+                            th
+                                button.btn.btn-danger.btn-sm(name='delete-all') Xóa
+                    if (products && products.length > 0)
+                        tbody
+                            each item, index in products
+                                tr
+                                    td
+                                        .form-check
+                                            input.form-check-input(type='checkbox' value=item.id aria-label='...' name='id')
+                                    td
+                                        img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
+                                    td #{item.title}
+                                    td #{item.price}$
+                                    td
+                                        input.form-control.form-control-sm(
+                                            type='number'
+                                            value=item.quantity
+                                            style='width: 100px'
+                                            min='1'
+                                            max=item.stock
+                                            name='quantity'
+                                            product-id=item.id
+                                        )
+                                    td
+                                        a.btn.btn-danger.btn-sm(href=`/cart/delete/${item.id}`) Xóa
+                    else
+                        tr
+                            td.text-center(colspan='6') Không có sản phẩm
+
+                h3.text-right.mt-3 Tổng tiền
+                .text-right.mt-3
+                    a.btn.btn-success.btn-lg(href='/checkout') Mua hàng
+
+    form.form-group(
+        action='/cart/delete-all'
+        method='POST'
+        form-delete
+    )
+        input.form-control.d-none(
+            type="text"
+            value=""
+            name='ids'
+        )
+    script(src='../js/cart.js')

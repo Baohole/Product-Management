@@ -1,5 +1,4 @@
 const changeStatus = document.querySelectorAll('[button-change-status]');
-//console.log(changeStatus);
 changeStatus.forEach((button) => {
     button.addEventListener('click', () => {
        const status = button.getAttribute('data-status');
