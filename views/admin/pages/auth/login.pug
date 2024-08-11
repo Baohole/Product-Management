@@ -5,6 +5,7 @@ block main
     +alert-success(3000)
     +alert-fail(5000)
 
+    h3.mt-5.mb-4.text-center Đăng nhập
     form(
         action=`${prefixAdmin}/auth/login` 
         id="form-create-product" 
@@ -12,23 +13,24 @@ block main
         class='form-login'
     )
           
-        h1.mb-4 Đăng nhập
-        .mb-3
-            label.form-label(for="email") Email
-            input.form-control(
-                type="email" 
-                id="email"
-                name="email" 
-                required
-            )
-        .mb-3
-            label.form-label(for="password") Mật khẩu 
-            input.form-control(
-                id="password" 
-                name="password"
-                type="password"
-                required
-            )
+        .row.justify-content-center
+            .col-md-6
+                .mb-3
+                    label.form-label(for="email") Email
+                    input.form-control(
+                        type="email" 
+                        id="email"
+                        name="email" 
+                        required
+                    )
+                .mb-3
+                    label.form-label(for="password") Mật khẩu 
+                    input.form-control(
+                        id="password" 
+                        name="password"
+                        type="password"
+                        required
+                    )
 
-        .mb-3.text-center
-            button.btn.btn-primary(type="submit") Đăng nhập
+                .mb-3.text-center
+                    button.btn.btn-primary(type="submit") Đăng nhập

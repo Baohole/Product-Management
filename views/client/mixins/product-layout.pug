@@ -5,11 +5,11 @@ mixin product-grid(data)
                 .product-item
                     a(href = `/products/detail/${item.slug}`)
                         .inner-image  
-                            img(src=item.thumbnail, alt=item.title)
+                            img(src=item.thumbnail, alt=item.title )
                             if (item.featured)
                                 span.inner-featured Nổi bật
                     .inner-content
                         h3.inner-title #{item.title}
-                        .inner-price-new #{item.newPrice}
-                        .inner-price-old #{item.price}
+                        .inner-price-new #{item.newPrice} $
+                        .inner-price-old #{item.price} $
                         .inner-discount #{item.discountPercentage}%

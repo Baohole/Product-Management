@@ -6,7 +6,7 @@ module.exports.getProducts = async (records, cartId) => {
     const cart = await Cart.findOne({
         _id: cartId,
     });
-    console.log(cart);
+    //console.log(cart);
     const products_in_cart = cart.products.filter((item) => {
         return records.includes(item.productId);
     });

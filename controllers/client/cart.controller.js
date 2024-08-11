@@ -5,10 +5,10 @@ const productHelper = require('../../helper/products.helper');
 
 //[POST]/cart/add/:id
 module.exports.addPost = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const cart_id = req.cookies.cart_id;
     const productId = req.params.id
     const cart = await Cart.findOne({
-        _id: cartId
+        _id: cart_id
     });
     //console.log(cart.products);
     const productObj = {
@@ -20,7 +20,7 @@ module.exports.addPost = async (req, res) => {
         const newQuantity = isExist.quantity + parseInt(req.body.quantity);
         //console.log(newQuantity);
         await Cart.updateOne({
-            _id: cartId,
+            _id: cart_id,
             "products.productId": productId
         }, {
             $set: {
@@ -30,7 +30,7 @@ module.exports.addPost = async (req, res) => {
     }
     else {
         await Cart.updateOne({
-            _id: cartId
+            _id: cart_id
         }, {
             $push: { products: productObj }
         });
@@ -42,9 +42,9 @@ module.exports.addPost = async (req, res) => {
 
 //[GET]/cart
 module.exports.index = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const cart_id = req.cookies.cart_id;
     const cart = await Cart.findOne({
-        _id: cartId
+        _id: cart_id
     });
     const records = cart.products;
     const products = []
@@ -63,10 +63,10 @@ module.exports.index = async (req, res) => {
 
 //[GET]/cart/update/:product_id/:quantity
 module.exports.update = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const cart_id = req.cookies.cart_id;
     const { product_id, quantity } = req.params;
     await Cart.updateOne({
-        _id: cartId,
+        _id: cart_id,
         'products.productId': product_id
     }, {
         $set: {
@@ -78,10 +78,10 @@ module.exports.update = async (req, res) => {
 
 //[GET]/cart/delete/:product_id
 module.exports.delete = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const cart_id = req.cookies.cart_id;
     const { product_id } = req.params;
     await Cart.updateOne({
-        _id: cartId,
+        _id: cart_id,
     }, {
         $pull: {
             products: { productId: product_id }
@@ -92,10 +92,10 @@ module.exports.delete = async (req, res) => {
 
 //[GET]/cart/delete-all
 module.exports.deleteAll = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const cart_id = req.cookies.cart_id;
     const ids = req.body.ids.split(',');
     await Cart.updateOne({
-        _id: cartId
+        _id: cart_id
     }, {
         $pull: {
             products: { productId: { $in: ids } }

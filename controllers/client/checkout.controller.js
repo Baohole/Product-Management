@@ -35,7 +35,7 @@ module.exports.orderPost = async (req, res) => {
         products: order_info.products,
         totalPrice: order_info.totalPrice
     }
-    console.log(order);
+    //console.log(order);
     const newOrder = new Order(order);
     await newOrder.save();
 
@@ -46,6 +46,19 @@ module.exports.orderPost = async (req, res) => {
             products: { productId: { $in: records } }
         }
     });
+    //console.log(order_info.products);
+    for(const item of order_info.products){
+        //console.log(item);
+        const product = await Product.findOne({
+            _id: item.product_id
+        });
+        product.stock = Math.max(product.stock - item.quantity, 0);
+        //console.log(product.stock);
+        if(!product.stock){
+            product.status = 'inactive';
+        }
+        await product.save();
+    }   
     //res.send('ok');
     res.redirect(`/checkout/order/success/${newOrder.id}`)
 }
@@ -57,7 +70,7 @@ module.exports.success = async (req, res) => {
         _id: order_id
     });
    
-    console.log(order);
+    //console.log(order);
     const products = [];
     for(const item of order.products){
         let product = await Product.findOne({_id: item.product_id}).select('title thumbnail');

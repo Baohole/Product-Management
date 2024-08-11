@@ -109,9 +109,10 @@ module.exports.createProductPost = async (req, res) => {
     if(data.featured){
         data.featured = true;
     }
-    const product = new Product(data);
-    product.createdBy.account_id = res.locals.user._id;
+  
     try {
+        const product = new Product(data);
+        product.createdBy.account_id = res.locals.user._id;
         await product.save();
         req.flash('success', `Tạo mới thành công!!`);
     } catch (error) {

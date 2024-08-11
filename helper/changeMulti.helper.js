@@ -57,7 +57,7 @@ module.exports.changeMulti = async (req, res, collection) => {
 module.exports.changeStatus = async (req, res, collection) => {
     const id = req.params.id;
     const currentStatus = req.params.status;
-    console.log(req.params.id);
+    //console.log(req.params.id);
     const updatedBy ={
         account_id : res.locals.user._id,
         action: 'change-status',
