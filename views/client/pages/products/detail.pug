@@ -27,13 +27,16 @@ block main
           strong.me-2 Danh mục:
           a(href = `products/detail/${product.slug}`) #{product.category_name}
 
-                .mb-3
-          strong.me-2 Giá:
-          span #{product.price}
-        
         .mb-3
           strong.me-2 % Giảm giá:
           span #{product.discountPercentage}%
+
+        .mb-3
+          strong.me-2 Giá:
+          span.text-decoration-line-through.me-2 #{product.price}
+          span.fw-bold #{product.newPrice}
+        
+       
         
         .mb-3
           strong.me-2 Số lượng:

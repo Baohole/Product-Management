@@ -1,0 +1,82 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/pagination.pug
+include ../../mixins/product-layout.pug
+
+block main
+    .container
+        .row
+            .col-12
+                +box-head('Đặt hàng thành công')
+        p.alert.alert-success Đã đặt hàng thành công. Đơn hàng sẽ được giao tới trong thời gian sớm nhất
+  
+        .row
+            .col-12
+                h3.mb-4 Thông tin đơn hàng
+               
+                .table-responsive
+                    table.table.table-hover.table-sm
+                        thead.table-light
+                            tr
+                                th Hình ảnh
+                                th Tên sản phẩm
+                                th Giá
+                                th Số lượng
+                        if (order_info.products && order_info.products.length > 0)
+                            tbody
+                                each item, index in order_info.products
+                                    tr
+                                        td
+                                            img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
+                                        td #{item.title}
+                                        td 
+                                            span.text-decoration-line-through.me-2 #{item.price}
+                                            span.fw-bold(new-price) #{item.newPrice}
+                                        td  #{item.quantity}
+                
+                h5.text-end.mt-3 Tổng tiền: #{order_info.totalPrice} $
+
+                
+                    h3.mt-5.mb-4.text-center Thông tin cá nhân 
+                    form(
+                        action=`` 
+                        method=""
+                    )
+                        .row.justify-content-center
+                            .col-md-6
+                                .mb-3
+                                    label.form-label(for="full_name") Họ tên
+                                    input.form-control(
+                                        type="text" 
+                                        id="full_name"
+                                        name="full_name"
+                                        value=order_info.user_info.full_name
+                                        readonly
+                                    )
+                                .mb-3
+                                    label.form-label(for="email") Email 
+                                    input.form-control(
+                                        id="email" 
+                                        name="email"
+                                        type="email"
+                                        value=order_info.user_info.email
+                                        readonly
+                                    )
+                                .mb-3
+                                    label.form-label(for="address") Địa chỉ 
+                                    input.form-control(
+                                        id="address" 
+                                        name="address"
+                                        type="text"
+                                        value=order_info.user_info.address
+                                        readonly
+                                    )
+                                .mb-3
+                                    label.form-label(for="phone") Số điện thoại 
+                                    input.form-control(
+                                        id="phone" 
+                                        name="phone"
+                                        type="tel"
+                                        value=order_info.user_info.phone
+                                        readonly
+                                    )

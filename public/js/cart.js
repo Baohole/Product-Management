@@ -8,6 +8,19 @@ if (productsTable) {
     checkAll.addEventListener('click', () => {
         checkId.forEach((check) => {
             check.checked = checkAll.checked;
+
+            const tr = check.closest('tr');
+            const price = parseInt(tr.querySelector('[new-price]').innerHTML);
+            const quantity = parseInt(tr.querySelector('input[name=quantity]').value);
+            const totalPirce = document.querySelector('[total-price]');
+            if(check.checked){
+                totalPirce.innerHTML = (price * quantity + parseInt(totalPirce.innerHTML.split(' $'))) + ' $';
+                            
+            }
+            else {
+                totalPirce.innerHTML = (parseInt(totalPirce.innerHTML.split(' $')) - price * quantity ) + ' $';
+            }
+
         });
     });
 
@@ -16,6 +29,19 @@ if (productsTable) {
         check.addEventListener('click', () => {
             const countChecked = productsTable.querySelectorAll('input[name=id]:checked').length;
             checkAll.checked = countChecked === checkId.length;
+
+            const tr = check.closest('tr');
+            const price = parseInt(tr.querySelector('[new-price]').innerHTML);
+            const quantity = parseInt(tr.querySelector('input[name=quantity]').value);
+            const totalPirce = document.querySelector('[total-price]');
+            if(check.checked){
+                totalPirce.innerHTML = (price * quantity + parseInt(totalPirce.innerHTML.split(' $'))) + ' $';
+                            
+            }
+            else {
+                totalPirce.innerHTML = (parseInt(totalPirce.innerHTML.split(' $')) - price * quantity ) + ' $';
+            }
+
         });
     });
 
@@ -32,9 +58,8 @@ if (productsTable) {
         }
 
     })
-    //console.log(deleteAll);
-}
 
+}
 const quantityBtn = document.querySelectorAll('input[name=quantity]');
 if(quantityBtn){
     quantityBtn.forEach((btn) => {
@@ -49,4 +74,20 @@ if(quantityBtn){
         });
     });
 
+}
+
+const chekoutBtn = document.querySelector('button[checkout]');
+if(chekoutBtn && productsTable){
+    chekoutBtn.addEventListener('click', () => {
+        const countChecked = productsTable.querySelectorAll('input[name=id]:checked');
+        const records = [...countChecked].map(item => item.value);
+        if(records){
+            const form = document.querySelector('[form-checkout]');
+            const input = form.querySelector('input[name=products]');
+            //console.log(form);
+            input.value = records.join(',');
+            form.submit();
+        }
+
+    });
 }

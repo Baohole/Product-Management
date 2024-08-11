@@ -33,7 +33,12 @@ block main
                                     td
                                         img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
                                     td #{item.title}
-                                    td #{item.price}$
+                                    td 
+                                        span.text-decoration-line-through.me-2 #{item.price}
+                                        span(
+                                            class="fw-bold"
+                                            new-price
+                                         ) #{item.newPrice}
                                     td
                                         input.form-control.form-control-sm(
                                             type='number'
@@ -50,9 +55,12 @@ block main
                         tr
                             td.text-center(colspan='6') Không có sản phẩm
 
-                h3.text-right.mt-3 Tổng tiền
+                h3(
+                    class='text-right mt-3'
+                ) Tổng tiền:
+                    span(total-price) 0 $
                 .text-right.mt-3
-                    a.btn.btn-success.btn-lg(href='/checkout') Mua hàng
+                    button.btn.btn-success.btn-lg(checkout) Mua hàng
 
     form.form-group(
         action='/cart/delete-all'
@@ -63,5 +71,16 @@ block main
             type="text"
             value=""
             name='ids'
+        )
+
+    form.form-group.d-none(
+        action='/checkout'
+        method='POST'
+        form-checkout
+    )
+        input.form-control(
+            type="text"
+            value=""
+            name='products'
         )
     script(src='../js/cart.js')

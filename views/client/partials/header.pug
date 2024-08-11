@@ -17,4 +17,4 @@ header.header
                             a(href='/products') Trang sản phẩm
                             +sub-menu(productCategories)
                         li  
-                            a(href='/cart') Giỏ hàng(#{totalQuantity ?  totalQuantity : '0'})
+                            a(href='/cart') Giỏ hàng(#{cart.totalQuantity ?  cart.totalQuantity : '0'})

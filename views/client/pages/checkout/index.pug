@@ -1,0 +1,85 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/pagination.pug
+include ../../mixins/product-layout.pug
+
+block main
+    .container
+        .row
+            .col-12
+                +box-head('Giỏ hàng')
+  
+        .row
+            .col-12
+                h3.mb-4 Thông tin đơn hàng
+               
+                .table-responsive
+                    table.table.table-hover.table-sm
+                        thead.table-light
+                            tr
+                                th Hình ảnh
+                                th Tên sản phẩm
+                                th Giá
+                                th Số lượng
+                        if (order_info.products && order_info.products.length > 0)
+                            tbody
+                                each item, index in order_info.products
+                                    tr
+                                        td
+                                            img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
+                                        td #{item.title}
+                                        td 
+                                            span.text-decoration-line-through.me-2 #{item.price}
+                                            span.fw-bold(new-price) #{item.newPrice}
+                                        td  #{item.quantity}
+                
+                h5.text-end.mt-3 Tổng tiền: #{order_info.totalPrice} $
+
+                
+                    h3.mt-5.mb-4.text-center Thông tin cá nhân 
+                    form(
+                        action=`/checkout/order/` 
+                        method="POST"
+                    )
+                        .row.justify-content-center
+                            .col-md-6
+                                .mb-3
+                                    label.form-label(for="full_name") Họ tên
+                                    input.form-control(
+                                        type="text" 
+                                        id="full_name"
+                                        name="full_name" 
+                                        required
+                                    )
+                                .mb-3
+                                    label.form-label(for="email") Email 
+                                    input.form-control(
+                                        id="email" 
+                                        name="email"
+                                        type="email"
+                                    )
+                                .mb-3
+                                    label.form-label(for="address") Địa chỉ 
+                                    input.form-control(
+                                        id="address" 
+                                        name="address"
+                                        type="text"
+                                        required
+                                    )
+                                .mb-3
+                                    label.form-label(for="phone") Số điện thoại 
+                                    input.form-control(
+                                        id="phone" 
+                                        name="phone"
+                                        type="tel"
+                                        required
+                                    )
+                                .mb-3
+                                    input.form-control.d-none(
+                                        id="ids" 
+                                        name="ids"
+                                        type="text"
+                                        value=ids
+                                    )
+                                .text-center.mt-4
+                                    button.btn.btn-success.btn-lg(type="submit") Đặt hàng

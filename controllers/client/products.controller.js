@@ -70,6 +70,9 @@ module.exports.prouctDetail = async (req, res) => {
         const category = await Category.findOne({ _id: product.category_id });
         product.category_name = category.title;
     }
+    const newPrice = product.price * (1 - product.discountPercentage / 100);
+    product.newPrice = Math.round((newPrice + Number.EPSILON) * 100 ) / 100;
+
     res.render('client/pages/products/detail', {
         pageTitle: product.title,
         product: product
