@@ -2,12 +2,17 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/pagination.pug
 include ../../mixins/product-layout.pug
+include ../../mixins/alert.pug
+
 
 block main
+
+    +alert-success(3000)
+    +alert-fail(5000)
     .container
         .row
             .col-12
-                +box-head('Giỏ hàng')
+                +box-head('Đơn hàng')
   
         .row
             .col-12
@@ -17,28 +22,32 @@ block main
                     table.table.table-hover.table-sm
                         thead.table-light
                             tr
-                                th Hình ảnh
-                                th Tên sản phẩm
-                                th Giá
-                                th Số lượng
+                                th(scope="col") #
+                                th(scope="col") Sản phẩm
+                                th(scope="col") Số lượng
+                                th(scope="col") Đơn giá
+                                th(scope="col") Thành tiền
                         if (order_info.products && order_info.products.length > 0)
                             tbody
                                 each item, index in order_info.products
                                     tr
-                                        td
-                                            img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
-                                        td #{item.title}
+                                        td #{index + 1}
+                                        td 
+                                            img.img-thumbnail.me-2(src=item.thumbnail alt=item.title width='80' height='80')
+                                            span.text-truncate #{item.title}
+                                        td  #{item.quantity}
                                         td 
                                             span.text-decoration-line-through.me-2 #{item.price}
-                                            span.fw-bold(new-price) #{item.newPrice}
-                                        td  #{item.quantity}
+                                            span(new-price) #{item.newPrice}$
+                                        td #{(item.quantity * item.newPrice)}$
+                                        
                 
-                h5.text-end.mt-3 Tổng tiền: #{order_info.totalPrice} $
+                    h5.text-end.mt-3 Tổng tiền: #{order_info.totalPrice} $
 
                 
                     h3.mt-5.mb-4.text-center Thông tin cá nhân 
                     form(
-                        action=`/checkout/order/` 
+                        action=`/checkout/order` 
                         method="POST"
                     )
                         .row.justify-content-center

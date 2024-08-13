@@ -3,17 +3,18 @@ const Product = require('../../models/products.model');
 
 const productHelper = require('../../helper/products.helper');
 
-//[POST]/cart/add/:id
+//[POST]/cart/add/:id/
 module.exports.addPost = async (req, res) => {
     const cart_id = req.cookies.cart_id;
-    const productId = req.params.id
+    const productId = req.params.id;
+    const quantity = parseInt(req.body.quantity);
     const cart = await Cart.findOne({
         _id: cart_id
     });
-    //console.log(cart.products);
+   
     const productObj = {
         productId: productId,
-        quantity: parseInt(req.body.quantity)
+        quantity: quantity
     }
     const isExist = cart.products.find(item => item.productId == productId);
     if (isExist) {

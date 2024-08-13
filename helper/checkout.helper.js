@@ -1,10 +1,10 @@
 const Cart = require('../models/cart.model');
 const Product = require('../models/products.model');
 
-module.exports.getProducts = async (records, cartId) => {
+module.exports.getProducts = async (records, cart_id) => {
     //console.log(cart._id);
     const cart = await Cart.findOne({
-        _id: cartId,
+        _id: cart_id,
     });
     //console.log(cart);
     const products_in_cart = cart.products.filter((item) => {
@@ -15,7 +15,7 @@ module.exports.getProducts = async (records, cartId) => {
     const products = [];
     let totalPrice = 0;
     for(const item of products_in_cart){
-        let product = await Product.findOne({_id: item.productId}).select('price discountPercentage');
+        let product = await Product.findOne({_id: item.productId}).select('price discountPercentage thumbnail title');
        
         
         const newPrice = product.price * (1 - product.discountPercentage / 100);
@@ -23,7 +23,9 @@ module.exports.getProducts = async (records, cartId) => {
             product_id: item.productId,
             price: product.price,
             quantity: item.quantity,
-            discountPercentage: product.discountPercentage 
+            discountPercentage: product.discountPercentage,
+            thumbnail: product.thumbnail,
+            title: product.title,
         }
         record.newPrice = Math.round((newPrice + Number.EPSILON) * 100 ) / 100;
        

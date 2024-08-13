@@ -2,8 +2,13 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/pagination.pug
 include ../../mixins/product-layout.pug
+include ../../mixins/alert.pug
+
 
 block main
+
+    +alert-success(3000)
+    +alert-fail(5000)
     .container
         .row
             .col-12
@@ -17,10 +22,11 @@ block main
                                 .form-check
                                     input#checkboxNoLabel.form-check-input(type='checkbox' value='' aria-label='...' name='check-all')
                                     label.form-check-label(for='checkboxNoLabel') Tất cả
-                            th Hình ảnh
-                            th Tên sản phẩm
-                            th Giá
-                            th Số lượng
+                            th(scope="col") #
+                            th(scope="col") Sản phẩm
+                            th(scope="col") Số lượng
+                            th(scope="col") Đơn giá
+                            th(scope="col") Thành tiền
                             th
                                 button.btn.btn-danger.btn-sm(name='delete-all') Xóa
                     if (products && products.length > 0)
@@ -30,15 +36,11 @@ block main
                                     td
                                         .form-check
                                             input.form-check-input(type='checkbox' value=item.id aria-label='...' name='id')
-                                    td
-                                        img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
-                                    td #{item.title}
+                                    td #{index + 1}
                                     td 
-                                        span.text-decoration-line-through.me-2 #{item.price}
-                                        span(
-                                            class="fw-bold"
-                                            new-price
-                                         ) #{item.newPrice}
+                                        a.d-flex.align-items-center.text-decoration-none(href=`/products/detail/${item.slug}`)
+                                            img.img-thumbnail.me-2(src=item.thumbnail alt=item.title width='80' height='80')
+                                            span.text-truncate #{item.title}
                                     td
                                         input.form-control.form-control-sm(
                                             type='number'
@@ -49,16 +51,23 @@ block main
                                             name='quantity'
                                             product-id=item.id
                                         )
+                                    td 
+                                        span.text-decoration-line-through.me-2 #{item.price}
+                                        span(
+                                            new-price
+                                        ) #{item.newPrice}$
+                                    td #{(item.quantity * item.newPrice)}$
+                        
                                     td
                                         a.btn.btn-danger.btn-sm(href=`/cart/delete/${item.id}`) Xóa
                     else
                         tr
-                            td.text-center(colspan='6') Không có sản phẩm
+                            td.text-center(colspan='7') Không có sản phẩm
 
-                h3(
-                    class='text-right mt-3'
-                ) Tổng tiền:
-                    span(total-price) 0 $
+                h5(
+                    class='text-end mt-3'
+                ) Tổng tiền: 
+                    span(total-price) 0$
                 .text-right.mt-3
                     button.btn.btn-success.btn-lg(checkout) Mua hàng
 

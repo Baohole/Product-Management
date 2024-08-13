@@ -7,10 +7,15 @@ const checkoutHelper = require('../../helper/checkout.helper');
 //[POST] /checkout
 module.exports.index = async (req, res) => {
     const records = req.body.products.split(',');
-    const cartId = req.cookies.cartId;
+    if(records[0] == ''){
+        req.flash('error','Vui lòng chọn ít nhất 1 sản phẩm')
+        res.redirect('back');
+        return;
+    }
+    const cart_id = req.cookies.cart_id;
 
-    const order_info = await checkoutHelper.getProducts(records, cartId);
-   
+    const order_info = await checkoutHelper.getProducts(records, cart_id);
+    //console.log(order_info);
     res.render('client/pages/checkout/index', {
         pageTitle: 'Đặt hàng',
         order_info: order_info,
@@ -18,14 +23,73 @@ module.exports.index = async (req, res) => {
     });
 }
 
+//[POST] /checkout/buynow/:product_id
+module.exports.buyOnePost = async (req, res) => {
+    const product_id = req.params.product_id;
+    const cart_id = req.cookies.cart_id;
+    const quantity = parseInt(req.body.quantity);
+
+    const cart = await Cart.findOne({
+        _id: cart_id,
+    });
+    const productObj = {
+        productId: product_id,
+        quantity: quantity
+    }
+    const isExist = cart.products.find(item => item.productId == product_id);
+    if (isExist) {
+        const newQuantity = isExist.quantity + parseInt(req.body.quantity);
+        //console.log(newQuantity);
+        await Cart.updateOne({
+            _id: cart_id,
+            "products.productId": product_id
+        }, {
+            $set: {
+                'products.$.quantity': newQuantity
+            }
+        })
+    }
+    else {
+        await Cart.updateOne({
+            _id: cart_id
+        }, {
+            $push: { products: productObj }
+        });
+    }
+
+    let product = await Product.findOne({_id: product_id}).select('price discountPercentage thumbnail title');
+    const newPrice = product.price * (1 - product.discountPercentage / 100);
+    const newPriceRound = Math.round((newPrice + Number.EPSILON) * 100 ) / 100;
+
+    const order_info = {
+        products: [{
+            product_id: product_id,
+            price: product.price,
+            quantity: quantity,
+            discountPercentage: product.discountPercentage,
+            thumbnail: product.thumbnail,
+            title: product.title,
+            newPrice: newPriceRound
+        }]
+    };
+    order_info.totalPrice = (newPriceRound * quantity);
+
+    res.render('client/pages/checkout/index', {
+        pageTitle: 'Đặt hàng',
+        order_info: order_info,
+        ids: product_id
+    });
+}
+
 //[POST] /checkout/order
 module.exports.orderPost = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const cart_id = req.cookies.cart_id;
     const {full_name, email, address, phone, ids} = req.body;
     const records = ids.split(',');
-    const order_info = await checkoutHelper.getProducts(records, cartId);
+    //console.log(records);
+    const order_info = await checkoutHelper.getProducts(records, cart_id);
     const order = {
-        cart_id: cartId,
+        cart_id: cart_id,
         user_info : {
             full_name: full_name,
             email: email,
@@ -35,12 +99,11 @@ module.exports.orderPost = async (req, res) => {
         products: order_info.products,
         totalPrice: order_info.totalPrice
     }
-    //console.log(order);
     const newOrder = new Order(order);
     await newOrder.save();
 
     await Cart.updateOne({
-        _id: cartId
+        _id: cart_id
     }, {
         $pull: {
             products: { productId: { $in: records } }
@@ -53,13 +116,11 @@ module.exports.orderPost = async (req, res) => {
             _id: item.product_id
         });
         product.stock = Math.max(product.stock - item.quantity, 0);
-        //console.log(product.stock);
         if(!product.stock){
             product.status = 'inactive';
         }
         await product.save();
     }   
-    //res.send('ok');
     res.redirect(`/checkout/order/success/${newOrder.id}`)
 }
 
@@ -92,7 +153,8 @@ module.exports.success = async (req, res) => {
     const order_info = {
         products: products,
         totalPrice: order.totalPrice,
-        user_info: order.user_info
+        user_info: order.user_info,
+        order_date: order.order_date
     }
     //console.log(order_info);
     res.render('client/pages/checkout/success', {

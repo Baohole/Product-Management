@@ -76,11 +76,13 @@ if(quantityBtn){
 
 }
 
+// 
 const chekoutBtn = document.querySelector('button[checkout]');
 if(chekoutBtn && productsTable){
     chekoutBtn.addEventListener('click', () => {
         const countChecked = productsTable.querySelectorAll('input[name=id]:checked');
         const records = [...countChecked].map(item => item.value);
+        console.log(records);
         if(records){
             const form = document.querySelector('[form-checkout]');
             const input = form.querySelector('input[name=products]');
@@ -91,3 +93,4 @@ if(chekoutBtn && productsTable){
 
     });
 }
+

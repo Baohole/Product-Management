@@ -1,6 +1,11 @@
 extends ../../layouts/user.pug
+include ../../mixins/alert.pug
+
 
 block main
+
+  +alert-success(3000)
+  +alert-fail(5000)
   .container
     .row.justify-content-center
       .col-md-6
@@ -43,7 +48,7 @@ block main
                   .d-grid.gap-2
                     button.btn.btn-primary(type="submit") Đăng nhập
                   .text-center.mt-3
-                    a(href="#") Quên mật khẩu?
+                    a(href="/user/password/forgot") Quên mật khẩu?
 
               #register.tab-pane.fade(role="tabpanel")
                 h3.mt-5.mb-4.text-center Đăng ký

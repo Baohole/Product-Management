@@ -2,8 +2,13 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/pagination.pug
 include ../../mixins/product-layout.pug
+include ../../mixins/alert.pug
+include ../../mixins/formatTime.pug
 
 block main
+
+    +alert-success(3000)
+    +alert-fail(5000)
     .container
         .row
             .col-12
@@ -12,71 +17,56 @@ block main
   
         .row
             .col-12
-                h3.mb-4 Thông tin đơn hàng
-               
-                .table-responsive
-                    table.table.table-hover.table-sm
-                        thead.table-light
+                h3.mt-5.mb-4 Thông tin cá nhân 
+                table.table
+                    tbody
+                        tr
+                            th(scope="row") Họ tên
+                            td= order_info.user_info.full_name
+                        tr
+                            th(scope="row") Email
+                            td= order_info.user_info.email
+                        tr
+                            th(scope="row") Địa chỉ
+                            td= order_info.user_info.address
+                        tr
+                            th(scope="row") Số điện thoại
+                            td= order_info.user_info.phone
+                        tr
+                            th(scope="row") Thời gian
+                            td
+                                +fullDetail(order_info.order_date)
+                        if order_info.user_info.note
                             tr
-                                th Hình ảnh
-                                th Tên sản phẩm
-                                th Giá
-                                th Số lượng
-                        if (order_info.products && order_info.products.length > 0)
-                            tbody
-                                each item, index in order_info.products
-                                    tr
-                                        td
-                                            img.img-thumbnail(src=item.thumbnail alt=item.title width='50' height='auto')
-                                        td #{item.title}
-                                        td 
-                                            span.text-decoration-line-through.me-2 #{item.price}
-                                            span.fw-bold(new-price) #{item.newPrice}
-                                        td  #{item.quantity}
-                
-                h5.text-end.mt-3 Tổng tiền: #{order_info.totalPrice} $
+                                th(scope="row") Ghi chú
+                                td= order_info.user_info.note
+        br
+        br                 
+        .row
+            .col-12
+                h3.mb-4 Thông tin đơn hàng
+                table.table
+                    thead
+                        tr
+                        th(scope="col") #
+                        th(scope="col") Sản phẩm
+                        th(scope="col") Số lượng
+                        th(scope="col") Đơn giá
+                        th(scope="col") Thành tiền
+                    tbody
+                        each product, index in order_info.products
+                            tr
+                                th(scope="row") #{index + 1}
+                                td
+                                    img.img-thumbnail(src=product.thumbnail alt=product.title width='80' height='80')
+                                    span #{product.title}
+                                td= product.quantity
+                                td
+                                    span.text-decoration-line-through.me-2 #{product.price}
+                                    span #{product.newPrice}$
+                                td #{(product.quantity * product.newPrice)}$
+                            tr.table-active
+                                td(colspan="4") Tổng cộng
+                                td #{order_info.totalPrice} $
 
-                
-                    h3.mt-5.mb-4.text-center Thông tin cá nhân 
-                    form(
-                        action=`` 
-                        method=""
-                    )
-                        .row.justify-content-center
-                            .col-md-6
-                                .mb-3
-                                    label.form-label(for="full_name") Họ tên
-                                    input.form-control(
-                                        type="text" 
-                                        id="full_name"
-                                        name="full_name"
-                                        value=order_info.user_info.full_name
-                                        readonly
-                                    )
-                                .mb-3
-                                    label.form-label(for="email") Email 
-                                    input.form-control(
-                                        id="email" 
-                                        name="email"
-                                        type="email"
-                                        value=order_info.user_info.email
-                                        readonly
-                                    )
-                                .mb-3
-                                    label.form-label(for="address") Địa chỉ 
-                                    input.form-control(
-                                        id="address" 
-                                        name="address"
-                                        type="text"
-                                        value=order_info.user_info.address
-                                        readonly
-                                    )
-                                .mb-3
-                                    label.form-label(for="phone") Số điện thoại 
-                                    input.form-control(
-                                        id="phone" 
-                                        name="phone"
-                                        type="tel"
-                                        value=order_info.user_info.phone
-                                        readonly
-                                    )
+                                            

@@ -1,20 +1,25 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
 
 
 block main
+
+  +alert-success(3000)
+  +alert-fail(5000)
   .container
     h1.mb-4 
-        +box-head('Chi tiết sản phẩm')
+      +box-head('Chi tiết sản phẩm')
     
     .row.mb-4
       .col-md-5
-        img.img-fluid.rounded(
-          src=product.thumbnail
-          alt="Ảnh sản phẩm"
-          style="max-width: 400px;"
-          img-upload-preview
-        )
+        .container
+          img.img-fluid.rounded(
+            src=product.thumbnail
+            alt="Ảnh sản phẩm"
+            style="max-width: 500px;"
+            img-upload-preview
+          )
       
       .col-md-7
         .mb-3
@@ -25,7 +30,7 @@ block main
 
         .mb-3
           strong.me-2 Danh mục:
-          a(href = `products/detail/${product.slug}`) #{product.category_name}
+          a(href = `/products/${product.category_slug}`) #{product.category_name}
 
         .mb-3
           strong.me-2 % Giảm giá:
@@ -36,38 +41,46 @@ block main
           span.text-decoration-line-through.me-2 #{product.price}
           span.fw-bold #{product.newPrice}
         
-       
-        
         .mb-3
           strong.me-2 Số lượng:
           span #{product.stock}
         
-        .mb-3
-          strong.me-2 Vị trí:
-          span #{product.position}
         .mb-3 
-        form(
-            action= `/cart/add/${product.id}`
+          form(
+            action= ``
             method="POST"
-        )
+            get-quantity
+            product-id=product.id
+          )
             input(
-                class="form-control mb-2"
-                type="number" 
-                name="quantity" 
-                value="1" 
-                min="1"
-                max=product.stock
+              class="form-control mb-2"
+              type="number" 
+              name="quantity" 
+              value="1" 
+              min="1"
+              max=product.stock
+              style='width: 70px'
             )
-            button(
-                type="submit"
-                class="btn btn-success btn-block"
-            ) Thêm vào gió hàng
+            
+        .mb-3 
+          button(
+            class="btn btn-success btn-block"
+            add-cart
+          ) Thêm vào giỏ hàng
+
+        .mb-3 
+          button(
+            buy-product
+            class="btn btn-danger btn-block"
+          ) Mua ngay
     hr
     .container.my-5 
         .row 
             .col-12 
                 h3 Mô tả sản phẩm:
                 span !{product.description}
+
+  script(src='../../js/product.js')
         
         
 

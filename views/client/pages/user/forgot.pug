@@ -1,0 +1,32 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+
+block main
+
+  +alert-success(3000)
+  +alert-fail(5000)
+  .container
+    .row.justify-content-center
+      .col-md-6
+        .card.mt-5
+          .card-body
+            .tab-content
+              #login.tab-pane.fade.show.active(role="tabpanel")
+                h3.mt-5.mb-4.text-center Lấy lại mật khẩu
+                form(
+                  action=`/user/password/forgot`
+                  id="forgot-form"
+                  method="POST"
+                  class="form-forgot"
+                )
+                  .mb-3
+                    label.form-label(for="email") Email
+                    input.form-control#email(
+                      type="email"
+                      name="email"
+                      required
+                      autofocus
+                    )
+                  .d-grid.gap-2
+                    button.btn.btn-primary(type="submit") Gửi mã OTP

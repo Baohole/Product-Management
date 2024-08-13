@@ -55,7 +55,7 @@ module.exports.prouctByCategory = async (req, res) => {
     productHelper.newPrice(products);
 
     res.render('client/pages/products/slugCategory', {
-        pageTitle: records.title,
+        pageTitle: category.title,
         products: products
     });
 }
@@ -69,6 +69,7 @@ module.exports.prouctDetail = async (req, res) => {
     if(product.category_id){
         const category = await Category.findOne({ _id: product.category_id });
         product.category_name = category.title;
+        product.category_slug = category.slug;
     }
     const newPrice = product.price * (1 - product.discountPercentage / 100);
     product.newPrice = Math.round((newPrice + Number.EPSILON) * 100 ) / 100;
