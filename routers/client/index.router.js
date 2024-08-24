@@ -3,9 +3,11 @@ const hRouter = require('./homes.router'); // Homes Router
 const cartRouter = require('./cart.router'); // Cart Router
 const checkoutRouter = require('./checkout.router'); // Check-out Router
 const userRouter = require('./user.router'); // Homes Router
+const chatRouter = require('./chat.router'); // Homes Router
 
 const subMenu = require('../../middleware/client/sub_menu.middleware');
 const mincart = require('../../middleware/client/cart.middleware');
+const auth = require('../../middleware/client/auth.middleware');
 const userMiddleware = require('../../middleware/client/user.middleware');
 
 module.exports = (app) => {
@@ -17,11 +19,14 @@ module.exports = (app) => {
     
     app.use('/products', pRouter);
 
-    app.use(`/cart`, mincart.isLogin, cartRouter);
+    app.use(`/cart`, auth.isLogin, cartRouter);
     
-    app.use(`/checkout`, checkoutRouter);
+    app.use(`/checkout`, auth.isLogin, checkoutRouter);
 
     app.use(`/user`, userRouter);
+
+    app.use(`/chat`, auth.isLogin, chatRouter);
+
 }
 
   

@@ -57,28 +57,7 @@ module.exports.buyOnePost = async (req, res) => {
         });
     }
 
-    let product = await Product.findOne({_id: product_id}).select('price discountPercentage thumbnail title');
-    const newPrice = product.price * (1 - product.discountPercentage / 100);
-    const newPriceRound = Math.round((newPrice + Number.EPSILON) * 100 ) / 100;
-
-    const order_info = {
-        products: [{
-            product_id: product_id,
-            price: product.price,
-            quantity: quantity,
-            discountPercentage: product.discountPercentage,
-            thumbnail: product.thumbnail,
-            title: product.title,
-            newPrice: newPriceRound
-        }]
-    };
-    order_info.totalPrice = (newPriceRound * quantity);
-
-    res.render('client/pages/checkout/index', {
-        pageTitle: 'Đặt hàng',
-        order_info: order_info,
-        ids: product_id
-    });
+   res.redirect(`/cart?item_key=${product_id}`);
 }
 
 //[POST] /checkout/order
@@ -111,7 +90,6 @@ module.exports.orderPost = async (req, res) => {
     });
     //console.log(order_info.products);
     for(const item of order_info.products){
-        //console.log(item);
         const product = await Product.findOne({
             _id: item.product_id
         });

@@ -13,12 +13,3 @@ module.exports.index = async (req, res, next) => {
     next();
 }
 
-module.exports.isLogin = async (req, res, next) => {
-    if(req.cookies.cart_id){
-        next();
-    }
-    else{
-        res.redirect('/user/login');
-    }
-    
-}

@@ -1,7 +1,7 @@
 const User = require('../../models/user.model');
 
 module.exports.register = async (req, res, next) => {
-    const { full_name, password, email, comfirm_password } = req.body;
+    const { full_name, password, email, confirm_password } = req.body;
    
     if(!full_name || !password || !email){
         req.flash('error','Vui lòng nhập đầy đủ thông tin')
@@ -24,7 +24,7 @@ module.exports.register = async (req, res, next) => {
         res.redirect('back');
         return;
     }
-    else if(password != comfirm_password){
+    else if(password !== confirm_password){
         req.flash('error','Mật khẩu xác nhận không chính xác');
         res.redirect('back');
         return;

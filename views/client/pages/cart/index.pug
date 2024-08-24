@@ -35,7 +35,13 @@ block main
                                 tr
                                     td
                                         .form-check
-                                            input.form-check-input(type='checkbox' value=item.id aria-label='...' name='id')
+                                            input.form-check-input(
+                                                type='checkbox' 
+                                                value=item.id 
+                                                aria-label='...' 
+                                                name='id'
+                                                checked=(buynow==item.id)
+                                            )
                                     td #{index + 1}
                                     td 
                                         a.d-flex.align-items-center.text-decoration-none(href=`/products/detail/${item.slug}`)

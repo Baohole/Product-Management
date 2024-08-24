@@ -4,44 +4,39 @@ if (productsTable) {
     const checkAll = productsTable.querySelector('input[name=check-all]');
     const checkId = productsTable.querySelectorAll('input[name=id]');
 
+    const getTotalPrice = (check) => {
+        const tr = check.closest('tr');
+        const price = parseFloat(tr.querySelector('[new-price]').innerHTML);
+        const quantity = parseInt(tr.querySelector('input[name=quantity]').value);
+        const totalPirce = document.querySelector('[total-price]');
+        if(check.checked){
+            totalPirce.innerHTML = (price * quantity + parseFloat(totalPirce.innerHTML.split(' $'))) + ' $';
+                        
+        }
+        else {
+            totalPirce.innerHTML = Math.max(0, (parseFloat(totalPirce.innerHTML.split(' $')) - price * quantity )) + ' $';
+        }
+    }
 
+    
     checkAll.addEventListener('click', () => {
+        const totalPirce = document.querySelector('[total-price]');
+        if(checkAll.checked){
+            totalPirce.innerHTML = '0 $'
+        }
         checkId.forEach((check) => {
             check.checked = checkAll.checked;
-
-            const tr = check.closest('tr');
-            const price = parseInt(tr.querySelector('[new-price]').innerHTML);
-            const quantity = parseInt(tr.querySelector('input[name=quantity]').value);
-            const totalPirce = document.querySelector('[total-price]');
-            if(check.checked){
-                totalPirce.innerHTML = (price * quantity + parseInt(totalPirce.innerHTML.split(' $'))) + ' $';
-                            
-            }
-            else {
-                totalPirce.innerHTML = (parseInt(totalPirce.innerHTML.split(' $')) - price * quantity ) + ' $';
-            }
-
+            getTotalPrice(check);
         });
     });
 
 
     checkId.forEach(check => {
+        getTotalPrice(check);
         check.addEventListener('click', () => {
             const countChecked = productsTable.querySelectorAll('input[name=id]:checked').length;
             checkAll.checked = countChecked === checkId.length;
-
-            const tr = check.closest('tr');
-            const price = parseInt(tr.querySelector('[new-price]').innerHTML);
-            const quantity = parseInt(tr.querySelector('input[name=quantity]').value);
-            const totalPirce = document.querySelector('[total-price]');
-            if(check.checked){
-                totalPirce.innerHTML = (price * quantity + parseInt(totalPirce.innerHTML.split(' $'))) + ' $';
-                            
-            }
-            else {
-                totalPirce.innerHTML = (parseInt(totalPirce.innerHTML.split(' $')) - price * quantity ) + ' $';
-            }
-
+            getTotalPrice(check);
         });
     });
 
@@ -65,7 +60,7 @@ if(quantityBtn){
     quantityBtn.forEach((btn) => {
         btn.addEventListener('change', () => {
             //console.log(btn);
-            const quantity = parseInt(btn.value);
+            const quantity = parseFloat(btn.value);
             const id = btn.getAttribute('product-id');
             
             window.location.href = `/cart/update/${id}/${btn.value}`

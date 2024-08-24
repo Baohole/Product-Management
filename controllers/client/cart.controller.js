@@ -44,6 +44,7 @@ module.exports.addPost = async (req, res) => {
 //[GET]/cart
 module.exports.index = async (req, res) => {
     const cart_id = req.cookies.cart_id;
+    const buynow = req.query.item_key;
     const cart = await Cart.findOne({
         _id: cart_id
     });
@@ -58,7 +59,8 @@ module.exports.index = async (req, res) => {
     productHelper.newPrice(products);
     res.render('client/pages/cart/index', {
         pageTitle: 'Giỏ hàng',
-        products: products
+        products: products,
+        buynow: buynow
     });
 }
 
